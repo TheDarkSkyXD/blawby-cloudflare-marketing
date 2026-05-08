@@ -18,6 +18,7 @@ export function Logo(props: React.ComponentProps<"svg">) {
         )}
       >
         <path
+          suppressHydrationWarning
           fill="currentColor"
           opacity="1.000000"
           stroke="none"
@@ -574,6 +575,7 @@ M638.068909,919.052368
 z"
         />
         <path
+          suppressHydrationWarning
           fill="currentColor"
           opacity="1.000000"
           stroke="none"
@@ -671,6 +673,7 @@ M1291.263794,832.751953
 z"
         />
         <path
+          suppressHydrationWarning
           fill="currentColor"
           opacity="1.000000"
           stroke="none"

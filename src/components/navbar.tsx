@@ -71,22 +71,23 @@ export function Navbar() {
     <div
       className={clsx(
         "sticky top-0 z-20 w-full",
-        "bg-white/95 backdrop-blur-sm dark:bg-gray-950/95",
-        "border-b border-gray-950/10 dark:border-white/10",
-        "flex h-14 items-center gap-x-0 px-4 sm:px-6",
+        "bg-white dark:bg-black",
+        "px-4 sm:px-6",
       )}
     >
-      <Link href="/" aria-label="Blawby home" className="flex shrink-0 items-center pr-6">
-        <Logo className="h-7 dark:text-white" />
-      </Link>
+      <div className="mx-auto flex h-14 w-full max-w-[1400px] items-center gap-x-0">
+        <Link href="/" aria-label="Blawby home" className="flex shrink-0 items-center pr-6">
+          <Logo className="h-7 dark:text-white" />
+        </Link>
 
-      {/* Center nav — hidden on mobile */}
-      <PrimaryNav className="hidden h-full lg:flex" />
+        {/* Center nav — hidden on mobile */}
+        <PrimaryNav className="hidden h-full lg:flex" />
 
-      <div className="flex-1" />
+        <div className="flex-1" />
 
-      {/* Right-side actions */}
-      <SiteNavigation />
+        {/* Right-side actions */}
+        <SiteNavigation />
+      </div>
     </div>
   );
 }
@@ -173,7 +174,7 @@ function MobileNavigation({
     <Dialog open={open} onClose={onClose} className="lg:hidden">
       <DialogBackdrop className="fixed inset-0 bg-gray-950/25" />
       <div className="fixed inset-0 flex justify-end pl-11">
-        <DialogPanel className="w-full max-w-xs bg-white px-4 py-5 ring ring-gray-950/10 sm:px-6 dark:bg-gray-950 dark:ring-white/10">
+        <DialogPanel className="w-full max-w-xs bg-white px-4 py-5 ring ring-gray-950/10 sm:px-6 dark:bg-black dark:ring-white/10">
           <div className="flex justify-end">
             <CloseButton as={IconButton} onClick={onClose} aria-label="Close menu">
               <CloseIcon className="stroke-gray-950 dark:stroke-white" />

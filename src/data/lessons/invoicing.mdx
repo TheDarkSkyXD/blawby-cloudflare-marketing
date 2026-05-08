@@ -1,7 +1,7 @@
 ---
-title: "Legal Invoicing: Automate Billing & Get Paid Faster"
+title: "Legal Invoicing — Generate from Matter, Get Paid"
 metaTitle: "Legal Invoicing for Law Firms | Blawby"
-desc: "Create, send, and track legal invoices in Blawby so your firm can collect payments faster with clearer billing records."
+desc: "Generate invoices in Blawby from a matter's unbilled time and expenses, send a Stripe-hosted pay link, and track Draft/Sent/Paid status by matter."
 image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public"
 author: "Paul Chris Luke"
 authorImage: "/images/logo.png"
@@ -9,88 +9,138 @@ category: "payments"
 contentType: "lesson"
 order: 40
 createdAt: "01/01/2024"
-updatedAt: "01/01/2024"
+updatedAt: "05/07/2026"
+lastVerified: "05/07/2026"
 tags:
   - Invoicing
   - Billing
-  - Invoices
+  - Matters
+  - Stripe
 keywords:
   - Law firm invoicing
-  - Legal invoice software
-  - Client invoice payments
-  - Blawby invoicing
+  - Generate invoice from time entries
   - Legal billing workflow
+  - Stripe-hosted invoice payment
+  - Retainer draw invoice
 targetAudience: "practice-owners"
 searchIntent: "informational"
 primaryKeyword: "law firm invoicing"
-secondaryKeywords: ["legal billing", "client invoices", "automated invoicing"]
-summary: "Use Blawby invoicing to send clear bills, collect payments, and track invoice status by client."
+secondaryKeywords: ["legal billing", "matter billing", "retainer invoice"]
+summary: "Generate invoices from a matter's unbilled summary, edit line items, send a Stripe-hosted pay link, and track status."
 schemaType: "Article"
 faq:
-  - question: "Can I invoice clients who haven’t paid before?"
-    answer: "Yes. You can create and send invoices to both new and existing clients directly from the Clients section in your dashboard."
-  - question: "Do invoices include my law firm’s branding?"
-    answer: "Yes. Invoices automatically include your firm's logo, contact info, and payment terms. You can customize this information under your account settings."
-  - question: "Can I accept payments directly from the invoice?"
-    answer: "Yes. Clients receive a secure link with the invoice that lets them pay online via credit card or ACH."
-  - question: "What if I need to collect payment immediately?"
-    answer: "Use a Payment Link instead of an invoice. Invoices require a due date of at least one day in the future."
-  - question: "Will I be notified when a client pays an invoice?"
-    answer: "Yes. You’ll receive an email notification when a payment is completed, and it will also appear in your dashboard in real time."
+  - question: "Where do I create an invoice?"
+    answer: "From the matter's Billing tab. Blawby pulls unbilled time and expenses into line items; you edit, add a flat-fee or retainer line if needed, and send."
+  - question: "How does the client pay?"
+    answer: "They get an email with a Stripe-hosted pay link. They can pay by card or ACH without creating a Blawby account."
+  - question: "When does the invoice flip to Paid?"
+    answer: "Automatically when payment clears. For ACH, that's when Stripe confirms settlement (a few business days). The matter's Activity tab logs every status change."
 noindex: false
 ---
 
 # Invoicing with Blawby
 
-Blawby makes it easy for law firms to create, send, and manage professional invoices for their clients.
+Invoices in Blawby are generated **from a matter**. The matter's unbilled summary (logged time, expenses, flat-fee line items, retainer draws) rolls into an invoice in one click. The client pays through a Stripe-hosted link; the invoice flips to Paid automatically when payment clears.
 
-To manage your invoices, visit [Invoicing](https://ai.blawby.com/invoicing).
+This page covers the operational flow. For the broader matter context — billing types, retainer balances, the seven matter tabs — see [Matters Overview](/features/matters-overview).
 
-## Overview
+## Generate an invoice
 
-Streamline your billing process with Blawby's powerful invoicing features designed for legal professionals.
+1. **Open the matter.** Most invoices come from active matters; you can also generate one from the Matters list view.
+2. **Switch to the Billing tab.** The **unbilled summary** card shows your billable hours, unbilled expenses, and any flat-fee or retainer items waiting to be invoiced.
+3. **Click Generate invoice.** The line items pull from the unbilled summary automatically.
+4. **Edit if needed.** Adjust descriptions, remove items you're not billing yet, or add a flat-fee or retainer-draw line.
+5. **Set the due date.** Defaults to your firm's invoice terms; can be changed per invoice.
+6. **Preview, then Send.** The client gets an email with a Stripe-hosted pay link.
 
-**Note:** All invoices must have a due date set for at least the next day. If you need to collect a payment immediately (same-day), use a [Payment Link](/payments/accepting-payments) instead. Payment links allow clients to pay you instantly, without waiting for an invoice due date.
+<DocPlaceholder
+  kind="screenshot"
+  src="/media/docs/billing/generate-invoice.png"
+  description="Billing tab on a matter — unbilled summary expanded, Generate invoice CTA highlighted, draft preview to the right."
+/>
 
-## Creating Invoices
+## What the client sees
 
-Use the following steps to create and send an invoice with Blawby:
+The email contains a clear summary, the line items, the total, and a **Pay** button:
 
-1. **Navigate to Clients and Select a Client.** (1 minute) Go to the "Clients" section in your Blawby dashboard and select the client you want to invoice. If you need to add or edit client information, see [Managing Clients](/payments/clients).
-2. **Click Generate Invoice.** (1 minute) In the client's profile, click "Generate Invoice." The invoice template will automatically use your firm's branding, including logo and contact information. If you need to update your contact info or logo, see [Getting Started](/guides/get-started).
-3. **Add Line Items for Legal Services.** (2 minutes) Enter a description of the service, time spent (if billing hourly), rate, and any flat fees as applicable. You can add multiple line items to reflect the full scope of work.
-4. **Set the Due Date.** (1 minute) Choose a due date for the invoice. Note: All invoices must have a due date set for at least the next day. If you need to collect a payment immediately, use a [Payment Link](/payments/accepting-payments) instead.
-5. **Preview the Invoice.** (1 minute) Review all details to ensure accuracy before sending.
-6. **Send the Invoice.** (1 minute) Click "Send" to email the invoice to your client. The client will receive a secure link to pay online.
+- They click **Pay**.
+- Stripe's hosted checkout collects card or ACH details.
+- They pay; the invoice flips to **Paid** in your dashboard automatically.
+- Both sides get a confirmation email with receipt.
 
-For more information on payment options, visit [Payments](/payments/accepting-payments).
+For ACH payments, the invoice shows **Pending** until Stripe confirms settlement (a few business days). No action needed on your side.
 
-## After Creating an Invoice
+## Invoice types Blawby supports
 
-Once you have created and sent an invoice, an email is automatically sent to your client requesting payment. This email includes a link that directs them to the payment page, where they can choose from various payment options. For more information on payment options, visit [Payments](/payments/accepting-payments).
+Each line item on an invoice can be:
 
-## Payment Confirmation
+- **Time entry** — hourly billing pulled from the matter's logged time. Rate applies per user role (attorney vs. admin).
+- **Expense** — flat amounts logged on the matter (filing fees, court costs, etc.).
+- **Flat fee** — for engagement work priced as a fixed amount.
+- **Retainer draw** — bills against the matter's retainer balance. If the balance is short, the client pays the difference.
 
-After a payment is successfully processed, both you and your client will receive a payment confirmation email. This ensures that both parties have a record of the transaction, providing peace of mind and a clear audit trail.
+A single invoice can mix types — common pattern: hourly time entries plus a flat-fee filing line plus an expense reimbursement, all on one invoice.
 
-## Frequently Asked Questions
+## Status lifecycle
 
-### Can I invoice clients who haven’t paid before?
+```
+Draft → Sent → (Pending) → Paid
+                  ↓
+               Overdue
+```
 
-Yes. You can create and send invoices to both new and existing clients directly from the Clients section in your dashboard.
+- **Draft** — generated but not sent. Edit freely.
+- **Sent** — email is out, client has the pay link.
+- **Pending** — for ACH; payment initiated, awaiting Stripe settlement.
+- **Paid** — payment cleared. Time entries flagged "billed."
+- **Overdue** — past due date and not paid. Reminder logic kicks in (configurable).
 
-### Do invoices include my law firm’s branding?
+Status changes log to the matter's Activity tab automatically.
 
-Yes. Invoices automatically include your firm's logo, contact info, and payment terms. You can customize this information under your account settings.
+## Retainer-draw invoices
 
-### Can I accept payments directly from the invoice?
+For retainer matters, the invoicing flow draws from the retainer balance:
 
-Yes. Clients receive a secure link with the invoice that lets them pay online via credit card or ACH.
+1. Generate the invoice from the unbilled summary as usual.
+2. The system applies the matter's retainer balance to the invoice total.
+3. If retainer covers it: client pays $0; balance reduces; you receive the funds via your trust-routing config.
+4. If retainer falls short: client pays the difference via Stripe; future invoices keep drawing from the balance.
+5. Send a **top-up invoice** when the balance gets low — same flow, but the line item is a retainer draw, not time entries.
 
-### What if I need to collect payment immediately?
+## Refunding an invoice
 
-Use a [Payment Link](/payments/accepting-payments) instead of an invoice. Invoices require a due date of at least one day in the future.
+Open the paid invoice → **Refund**. Refunds use Stripe's API; the invoice records the refund and notifies the client. Partial refunds are supported.
 
-### Will I be notified when a client pays an invoice?
+## When to use a payment link instead
 
-Yes. You’ll receive an email notification when a payment is completed, and it will also appear in your dashboard in real time.
+Invoices require a due date of at least the next day. If you need to collect immediately (consultation fee, retainer top-up, donation), use a pre-filled **payment link** instead:
+
+```
+https://blawby.com/your-firm-slug?amount=12500
+```
+
+`amount` in cents. See [Accepting Payments](/payments/accepting-payments) for the full payment link flow.
+
+## Common questions
+
+**Can I invoice without a matter?**
+Most invoicing flows through a matter. For one-off charges that aren't matter-bound, use payment links.
+
+**Do invoices include my firm branding?**
+Yes — your firm name, accent color, and logo (configured in **Settings → Practice**) appear on every invoice and Stripe checkout page.
+
+**Will I be notified when a client pays?**
+Yes — in-app, email, and (if subscribed) push notification. The matter's Activity tab also logs the change.
+
+**Can I edit a sent invoice?**
+No — sent invoices are immutable. To correct a mistake, void or refund and generate a new one. The audit trail preserves both.
+
+## Next steps
+
+- See the matter context: [Matters Overview](/features/matters-overview).
+- Set up payouts so your invoiced revenue lands in your bank: [Payouts](/payments/payouts).
+- Set up your fee model: [Future-Proof Revenue](/business-strategy/future-proof-revenue).
+
+---
+
+Ready to invoice clients with less admin? [Register for Blawby.](https://ai.blawby.com/register)

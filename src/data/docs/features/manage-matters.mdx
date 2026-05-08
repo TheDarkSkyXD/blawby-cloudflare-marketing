@@ -1,94 +1,152 @@
 ---
-title: "Manage Matters and Case Data Efficiently in Blawby"
-desc: "How to use the Matters tab in Blawby to handle billing, time tracking, team assignments, and client communication for active cases."
+title: "Manage Matters in Blawby — Day-to-Day Workflow"
+desc: "The day-to-day matter workflow in Blawby — log time, track files, generate invoices from unbilled work, communicate with the client, and close cleanly."
 image: "/og-images/default.png"
 alt: "Manage matters in Blawby"
 author: "Paul Chris Luke"
 authorImage: "/images/logo.png"
 category: "features"
+group: "Matters"
+groupOrder: 30
 contentType: "guide"
 order: 50
 createdAt: "04/30/2026"
-updatedAt: "04/30/2026"
+updatedAt: "05/07/2026"
+lastVerified: "05/07/2026"
 tags:
   - Matters
-  - Billing
   - Time-Tracking
-  - Case-Management
+  - Billing
+  - Files
 keywords:
-  - Matter management
-  - Legal billing
+  - Manage matters Blawby
   - Time tracking law firm
-  - Blawby matters
-  - Law firm case management
-summary: "Use the Matters tab to manage active legal work, billing, time tracking, and client collaboration."
+  - Generate invoice from time
+  - Close matter Blawby
+summary: "Day-to-day matter workflow: log time, manage files, generate invoices, communicate, and close cleanly."
 faq:
-  - Question: "When does a matter appear in the Matters tab?"
-    answer: "A matter is created after intake acceptance, engagement completion, and payment flow progression in your Blawby workflow."
-  - Question: "Can more than one team member work the same matter?"
-    answer: "Yes. Add assignees so attorneys and staff can collaborate with appropriate access."
-  - Question: "Can clients add files and request updates?"
-    answer: "Yes. Clients can use their matter workflow to share information and follow updates."
+  - question: "When does a matter become active?"
+    answer: "After the client signs the engagement and any initial payment (retainer, flat fee) clears. Active matters are where day-to-day work happens."
+  - question: "Can I switch billing types mid-matter?"
+    answer: "Yes. Update billing type from the matter's Settings tab. Existing time entries and invoices keep their original rates; new entries follow the new type."
 schemaType: "HowTo"
 noindex: false
 ---
 
 # Manage Matters
 
-Once a client is onboarded, the Matters tab becomes your day-to-day command center. The goal is simple: keep legal work, billing, communication, and documents in one place.
+Once an engagement is accepted, the matter is your day-to-day home for the work — billing, files, communication, and the audit trail. This page is the operational workflow.
 
-## What the Matters Tab Is
+For the full structure (the seven tabs, the unbilled-summary → invoice flow, the client portal view, reassignment, status transitions), see [Matters Overview](/features/matters-overview).
 
-The Matters tab is where active client work is managed after intake, engagement, and payment steps are completed.
+## The daily rhythm
 
-## Billing and Invoicing
+Most attorneys settle into something like this:
 
-From the matter workflow, your team can:
+1. **Open the matter** when starting work.
+2. **Log time** at the end of the work session — start/end or duration, billable, with a one-line note.
+3. **Drop files** as you collect them. Drag and drop into the Files tab, or accept what the client uploads in chat.
+4. **Update notes** at decision points. The Notes tab is internal-only; use it for strategy and privileged work product.
+5. **Send an invoice** when the unbilled summary justifies it (monthly, on milestones, or when a retainer needs a top-up).
+6. **Communicate** through the matter's chat thread, not external email — keeps the audit trail intact.
 
-- Create invoices tied to the matter
-- Send payment requests
-- Track paid and unpaid balances
+## Logging time
 
-Why this matters: matter-based billing makes it easier to track financial status by case instead of by inbox thread.
+On the **Work** tab, click **Add time entry**. Each entry includes:
 
-## Time Tracking
+- Start/end times *or* duration.
+- A one-line description (will appear on invoices).
+- Billable / non-billable toggle.
+- The rate — pulled automatically from your role on the practice (attorney rate vs. admin rate). Override per matter in **Settings tab** if this matter has unique rates.
 
-For hourly matters, log time against the active matter so billing records match actual work delivered.
+Discipline matters here. Logging at the end of each session, with a real description, is what makes invoices fast and disputes rare.
 
-Why this matters: accurate time records reduce disputes and support cleaner invoicing.
+<DocPlaceholder
+  kind="screenshot"
+  src="/media/docs/matters/time-entry-form.png"
+  description="Time entry form on the Work tab — start/end pickers, description, billable toggle, rate auto-applied from user role."
+/>
 
-## Assignees and Team Access
+## Generating an invoice
 
-Assign the right team members to each matter so work is visible and responsibilities are clear.
+When you're ready to bill:
 
-Typical assignment model:
+1. Open the **Billing** tab.
+2. Review the **unbilled summary** — billable hours, expenses, flat-fee line items, retainer draws waiting to be billed.
+3. Click **Generate invoice**. The line items pull from the summary.
+4. Edit if needed — adjust descriptions, remove items, add a flat fee or expense.
+5. **Send**. The client gets an email with a Stripe-hosted pay button.
 
-- Attorney: legal strategy and approvals
-- Paralegal: document prep and follow-up
-- Admin/billing: invoicing and payment monitoring
+For retainer matters, the invoice draws from the retainer balance first; if there's a shortfall, the client pays the difference. When the balance gets low, send a top-up invoice from the same flow.
 
-Why this matters: clear assignees prevent communication gaps and missed tasks.
+## Files
 
-## Client View and Collaboration
+The **Files** tab is the matter's document store:
 
-In the client-facing matter flow, clients can:
+- Upload by drag-drop or click-to-upload.
+- Accept files the client uploads in chat (they appear here automatically).
+- Preview images and PDFs in-browser.
+- Up to 25 MB per file.
+- Every upload, download, and delete logs to the **Activity** tab.
 
-- Review matter-related updates
-- Add files and supporting documents
-- Use chat for status updates and questions
+Organize by folder if a matter accumulates dozens of documents. Most matters are fine with a flat list.
 
-Why this matters: a single shared matter channel reduces fragmented communication.
+## Internal notes vs. client communication
 
-## File Sharing
+Two separate surfaces — keep them straight:
 
-Use matter-level file exchange for documents tied to the case. Keep file requests specific so clients know exactly what to upload.
+- **Notes tab** — internal-only. Strategy, privileged work product, conflict notes, reminder pings. **Clients never see this**.
+- **Chat thread** — visible to both sides. Use this for everything that's part of the lawyer/client relationship.
 
-## Ongoing Chat
+If you accidentally put privileged material in chat, delete the message immediately and document the deletion in Notes. The Activity tab will show the chat-message deletion regardless.
 
-Use matter chat for ongoing updates, requests, and confirmations. Keep messages concise and action-focused so clients know what happens next.
+## Team collaboration
 
-## Next Step
+The team assigned to the matter (configured on the **Settings** tab) all see the same matter, with role-appropriate access:
 
-As your matters grow, keep trust and payout operations clean with a documented compliance workflow.
+- **Attorney** — strategy, engagement decisions, settlement-level calls.
+- **Paralegal** — document collection, scheduling, draft work.
+- **Billing/admin** — invoices, retainer top-ups, payment monitoring.
 
-[Read IOLTA Compliance Guide](/compliance/iolta-compliance)
+Activity logs show who did what — useful both for billing review and for handoffs.
+
+## Reassigning a matter
+
+Cases change hands. To reassign:
+
+1. Open the matter → **Settings** tab.
+2. Update the team — add new assignees, remove old ones.
+3. Add a Note explaining the handoff context.
+
+The new assignees pick up the full thread and timeline. Nothing is lost.
+
+## Closing a matter
+
+When work is complete:
+
+1. Confirm there's no unbilled time or expenses sitting on the Billing tab.
+2. Send the final invoice, including any remaining retainer reconciliation.
+3. Once the final invoice is paid, change status to **Closed** in the Settings tab.
+4. (Optional) Archive — the matter is read-only after this.
+
+Closed matters stay searchable in the directory; their time entries, files, and activity are preserved indefinitely for audit.
+
+## Common operational questions
+
+**Two attorneys logged time on the same matter at the same time.**
+Both entries log; rates apply per user role. The invoice will show both.
+
+**A client wants to dispute a time entry.**
+Open the matter's **Activity** tab — every entry is timestamped with the user who logged it and what description they wrote. Use this in the discussion; resolve in writing in the Notes tab.
+
+**An expense came in after the invoice was sent.**
+Add the expense; it'll show on the next unbilled summary. Don't edit a sent invoice — generate a follow-up.
+
+**The matter is going pro bono mid-flight.**
+Update billing type to **Pro bono** in Settings. Existing entries keep their billable status; toggle them to non-billable individually if you want to zero out the unbilled summary.
+
+## Next: trust transfers and payment exceptions
+
+For retainer matters, a trust-to-operating workflow keeps fund handling clean. Pair that with the failed-payment SOP for full operational coverage.
+
+[Read the Trust-to-Operating Transfer Workflow](/features/trust-to-operating-transfer-workflow)

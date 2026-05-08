@@ -1,3 +1,5 @@
+import { Callout } from "@/components/callout";
+import { DocPlaceholder } from "@/components/doc-placeholder";
 import { transformerColorizedBrackets } from "@shikijs/colorized-brackets";
 import type { MDXComponents } from "mdx/types";
 import Image from "next/image";
@@ -62,7 +64,16 @@ async function CodeBlock({ code, lang }: { code: string; lang: string }) {
     ],
   });
 
-  return <div className="min-w-0 max-w-full w-full my-6 [&>pre]:overflow-x-auto [&>pre]:p-4 [&>pre]:rounded-lg" dangerouslySetInnerHTML={{ __html: out }} />;
+  return (
+    <div
+      // Shiki's inline style on the rendered <pre> is whitespace-normalized
+      // differently between SSR (no space after ":") and the browser (which
+      // re-serializes with a space). Visually identical, so suppress.
+      suppressHydrationWarning
+      className="min-w-0 max-w-full w-full my-6 [&>pre]:overflow-x-auto [&>pre]:p-4 [&>pre]:rounded-lg"
+      dangerouslySetInnerHTML={{ __html: out }}
+    />
+  );
 }
 
 const IMAGE_DIMENSION_REGEX = /^[^|]+\|\d+x\d+$/;
@@ -172,6 +183,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         {children}
       </td>
     ),
+    Callout,
+    DocPlaceholder,
     ...components,
   };
 }

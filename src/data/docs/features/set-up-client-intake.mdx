@@ -1,157 +1,130 @@
 ---
-title: "Set Up Client Intake Workflows for Your Law Firm"
-desc: "Set up client intake in Blawby so your team can capture better submissions, triage faster, and move qualified leads forward."
+title: "Set Up Client Intake — Widget, Template, Triage"
+desc: "End-to-end intake setup in Blawby: install the widget, configure your intake template, route notifications, and set up triage so submissions move."
 image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public"
 author: "Paul Chris Luke"
 authorImage: "/images/logo.png"
 category: "features"
+group: "Intake"
+groupOrder: 10
 contentType: "guide"
 order: 10
 createdAt: "02/15/2024"
-updatedAt: "02/15/2024"
+updatedAt: "05/07/2026"
+lastVerified: "05/07/2026"
 tags:
   - Client-Intake
-  - Client-Management
-  - Workflows
-  - Automation
+  - Setup
+  - Widget
+  - Notifications
 keywords:
-  - Blawby client intake setup
-  - Legal intake workflow
-  - Law firm intake process
-  - Custom intake form blawby
+  - Set up Blawby client intake
+  - Legal intake widget
+  - Intake notification routing
+  - Law firm intake configuration
 difficulty: "intermediate"
 prerequisites: ["create-practice-account"]
-timeToComplete: "45 minutes"
+timeToComplete: "30 minutes"
 nextSteps: ["review-and-triage-intake"]
 schemaType: "HowTo"
 faq:
-  - Question: "How do I create custom intake forms?"
-    answer: "Use the intake form builder in your dashboard to create custom fields and validation rules for your specific practice needs."
-  - Question: "Can I automate client onboarding?"
-    answer: "Yes, Blawby supports automated workflows for client onboarding, document signing, and initial consultation scheduling."
+  - question: "Do I need a website to use Blawby intake?"
+    answer: "No. You can share your widget URL directly in email or text. The script tag is for embedding on a site you control."
+  - question: "Where do I configure intake fields?"
+    answer: "In Settings → Intake templates. See the Intake Templates page for the full field model — required vs. enrichment, conditional logic, consultation fees."
+  - question: "Who gets notified when a new intake arrives?"
+    answer: "Whichever team members you've enabled intake notifications for in Settings → Notifications. Notifications fan out to in-app, email, and (optionally) push."
 noindex: false
 ---
 
 # Set Up Client Intake
 
-Client intake is where first impressions and operational quality meet. A clear intake process helps you respond faster, collect the right details the first time, and avoid back-and-forth that slows down new matters. This guide walks you through a practical dashboard setup so your team can move from inquiry to qualified client without chaos.
+Intake in Blawby has four moving pieces: the **widget** clients fill out, the **template** that defines what's collected, the **notification policy** that gets a human looking at it, and the **triage flow** that turns a submission into an active matter.
 
-## Why Client Intake Matters
+This page walks through all four end-to-end. Each section links to a deeper reference for the part that's most often customized.
 
-When intake is inconsistent, firms lose time and often lose good clients. When it is consistent, your staff knows exactly what to do, prospective clients know what to expect, and attorneys get cleaner information before a consultation.
+## 1. The widget — what your clients see
 
-Blawby helps you:
+The widget is the embeddable chat surface. Clients open it from your website, your widget URL, or any link you share. The AI walks them through your intake template, collects files when needed, optionally takes a consultation fee, and submits to your queue.
 
-- Reduce manual admin during new-client onboarding
-- Improve response speed with structured intake details
-- Keep records cleaner for billing and compliance workflows
-- Scale lead handling without creating team confusion
+What it supports out of the box:
 
-## Getting Started
+- **18 languages** with full RTL for Arabic. Auto-detects browser language; clients can switch.
+- **File uploads** up to 25 MB per file (images, video, audio, PDF, Word).
+- **Conditional fields** — the AI only asks follow-ups when a parent answer matches.
+- **Practice branding** — your firm's name, logo, and accent color, all set in Settings.
 
-### Before You Begin
+For installation, see [Install the Chat Widget](/ai-chat/install-chat-widget). The fastest path is sharing your widget URL directly; embedding the script on your firm site is a 5-minute addition you can do later.
 
-You'll need:
+## 2. The template — what the AI collects
 
-- Active Blawby practice account
-- Admin access to intake settings
-- A basic decision on who owns intake in your firm (attorney, paralegal, or office manager)
+The intake template is the script the AI follows. It defines:
 
-### Step 1: Configure Intake Forms
+- **Required fields** that gate submission.
+- **Enrichment fields** offered after submission as "strengthen your case."
+- **Consultation fee** (optional) charged before submission.
+- **Legal disclaimer** shown once before contact collection.
 
-Your intake form should collect just enough to qualify a matter and move to the next step. Overly long forms increase drop-off.
+Most setup time goes here. Don't over-stuff required fields — the shorter the required list, the higher the completion rate. See [Intake Templates](/features/intake-templates) for the full model, conditional-logic syntax, and a fee-gating walkthrough.
 
-In your dashboard:
+<DocPlaceholder
+  kind="screenshot"
+  src="/media/docs/intake/template-list.png"
+  description="IntakeTemplatesPage list view, with one default template and the New template CTA visible."
+/>
 
-1. Open intake settings and choose your primary practice areas.
-2. Start with core fields every matter needs (name, phone, email, issue summary, jurisdiction).
-3. Add a small set of practice-specific questions (for example, case type and urgency).
-4. Mark only truly required questions as required.
-5. Save and submit a test intake yourself.
+## 3. Notifications — make sure a human sees it fast
 
-Why this matters: shorter, focused forms increase completions and give your team better first-contact context.
+A new intake is only as useful as the speed of the first response. Configure who gets pinged in **Settings → Notifications**.
 
-### Step 2: Set Up Client Management
+| Channel | Use it for |
+|---|---|
+| **In-app** | Every team member; this is the bell-icon count in the dashboard. |
+| **Email** | At least the intake owner, ideally a backup too. |
+| **Push (OneSignal)** | When you want phone-buzz speed. Each user opts in from their own device. |
 
-Once intake data is captured, your team needs a consistent way to review and act.
+Define a **backup intake owner** for after-hours and vacation coverage. A new submission with no human looking at it for 24 hours is a lead lost to the next firm.
 
-In your dashboard:
+## 4. Triage — turn submissions into matters
 
-1. Define your lead status stages (for example: New Inquiry, Needs Review, Qualified, Not a Fit).
-2. Confirm which intake fields should appear in the client profile.
-3. Set ownership rules so each new submission has a responsible team member.
-4. Use the client timeline to keep notes and communications in one place.
+When an intake arrives, the queue lives at **Intakes** in your dashboard. From the detail view, your three options are:
 
-Why this matters: consistent status and ownership rules prevent missed follow-ups and duplicated work.
+- **Accept** — opens the conversation thread and creates the matter; you take it from there.
+- **Decline** — politely closes the loop with the prospective client.
+- **Ask AI to gather more info** — sends the conversation back to the widget for follow-up questions before you decide.
 
-### Step 3: Automate Workflows
+For the full triage workflow see [Review and Triage Client Intakes](/features/review-and-triage-intake). The "ask for more info" flow is especially useful for matters that look promising but are missing one or two critical facts.
 
-Automation should reduce repetitive admin, not add complexity. Start with two or three automations and expand later.
+## Best practices
 
-Recommended first automations:
+### Template
 
-1. Notify the intake owner when a new qualified submission arrives.
-2. Send an acknowledgment message to the prospective client.
-3. Create a follow-up reminder if no action is taken within one business day.
-4. Route urgent matters for same-day review.
+- **Keep the required list short.** Five fields or fewer.
+- **Use conditional logic.** Fewer questions on screen = higher completion.
+- **Test on mobile.** Most intake submissions come from phones.
+- **Set a fee only if it's part of your policy.** Gating on a $0 charge is wasted friction.
 
-Why this matters: quick response time is often the difference between signing a matter and losing it to another firm.
+### Notifications
 
-## Best Practices
+- **One primary, one backup.** Single point of failure on intake notifications is the most common operational gap on day two.
+- **Push for speed, email for record.** Use both.
+- **Re-check after vacations.** People silence push and forget to re-enable it.
 
-### Form Design
+### Triage
 
-- **Keep forms short**: Ask only what your team needs to take the next step
-- **Use plain language**: Write questions the way clients naturally speak
-- **Use conditional questions**: Show relevant follow-ups based on matter type
-- **Test from a phone**: Many clients submit intake from mobile devices
+- **Define accept/decline criteria in writing.** Hold weekly debriefs the first month.
+- **Use "ask AI for more info" for borderline submissions** — it's higher-conversion than declining a thin lead.
+- **Move accepted intakes to a matter the same day.** Stale intakes go cold fast.
 
-### Data Management
+## Common pitfalls
 
-- **One source of truth**: Keep intake details in the client record, not scattered across inboxes
-- **Consistent naming**: Use the same labels for status and urgency across the team
-- **Timeline discipline**: Add notes for key decisions and contact attempts
+- **No backup intake owner** — the most common day-two problem.
+- **Required fields a client can't reasonably answer.** "Is this negligence?" is for the consult, not the form.
+- **Inconsistent triage criteria across staff** — you'll get conflicting client experiences fast.
+- **Intake template never revisited** — review monthly for fields that consistently come back empty.
 
-### Automation Rules
+## Next: triage submissions
 
-- **Escalate urgent matters**: Route high-priority submissions to immediate review
-- **Set response SLAs**: Define internal deadlines for first outreach
-- **Review weekly**: Track where intakes stall and adjust process steps
+Once your widget is live and notifications are routing, the queue starts filling up. Move to triage.
 
-## Common Intake Mistakes to Avoid
-
-- Asking for too much information before trust is built
-- Leaving “new inquiry” submissions unassigned
-- Using inconsistent status names between team members
-- Failing to define who follows up and when
-
-## Troubleshooting
-
-### Form completion is low
-
-- Shorten required questions
-- Move non-essential questions to consultation prep
-- Clarify the benefit of completing intake in your opening message
-
-### Team follow-up is inconsistent
-
-- Assign one owner for each new submission
-- Set automatic reminders for untouched leads
-- Use one agreed status workflow across the firm
-
-### Intake quality is poor
-
-- Add one or two qualification questions tied to your practice areas
-- Include a required “brief summary” field
-- Review submissions weekly and refine weak questions
-
-## Next Steps
-
-Your intake process is now structured for faster response and better lead quality. Next, connect intake to payment readiness so qualified leads can move directly into paid consultations and invoicing.
-
-1. Train your team on status and ownership rules.
-2. Test your form from desktop and mobile.
-3. Review first-response time after one week.
-4. Improve any step where leads are stalling.
-
-[Continue to Accept Your First Payment](/quick-start/accept-first-payment)
+[Continue to Review and Triage Client Intakes](/features/review-and-triage-intake)

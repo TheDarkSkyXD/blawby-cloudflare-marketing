@@ -1,0 +1,172 @@
+---
+title: "Intake Templates: Fields, Conditions, and Fees"
+desc: "Configure required vs. enrichment fields, conditional logic, and consultation fees in Blawby intake templates so submissions land ready to triage."
+image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public"
+author: "Paul Chris Luke"
+authorImage: "/images/logo.png"
+category: "features"
+group: "Intake"
+groupOrder: 10
+contentType: "guide"
+order: 15
+createdAt: "05/07/2026"
+updatedAt: "05/07/2026"
+lastVerified: "05/07/2026"
+tags:
+  - Client-Intake
+  - Intake-Templates
+  - Configuration
+  - Conditional-Logic
+keywords:
+  - Blawby intake template
+  - Required intake fields
+  - Enrichment fields legal intake
+  - Conditional intake fields
+  - Consultation fee intake
+difficulty: "intermediate"
+prerequisites: ["create-practice-account"]
+timeToComplete: "20 minutes"
+nextSteps: ["review-and-triage-intake"]
+schemaType: "HowTo"
+faq:
+  - question: "What is the difference between a required field and an enrichment field?"
+    answer: "Required fields gate submission — the AI keeps asking until they're filled. Enrichment fields are offered after submission as 'strengthen your case' and are optional, designed to upgrade case quality without blocking the lead."
+  - question: "Can intake fields depend on previous answers?"
+    answer: "Yes. Each field can declare a dependsOn rule, so the AI only asks the question when a parent answer matches a specific value."
+  - question: "How does the consultation fee work?"
+    answer: "When you set a consultation fee on a template, submission is gated on a successful Stripe payment. The intake reaches your queue only after the client pays."
+noindex: false
+---
+
+# Intake Templates
+
+An intake template is the script your AI follows when a potential client opens your widget. It defines what gets collected, what's required vs. optional, what gets gated on payment, and how the conversation branches.
+
+This page covers the template model: the four kinds of inputs you configure, the conditional logic that keeps conversations short, and the consultation-fee flow.
+
+<DocPlaceholder
+  kind="video"
+  src="/media/docs/intake/template-walkthrough.mp4"
+  description="30-second walkthrough of IntakeTemplatesPage — creating a template, adding a required field, adding an enrichment field, toggling consultation fee."
+/>
+
+## The four parts of a template
+
+| Part | Purpose | Behavior |
+|---|---|---|
+| **Required fields** | What your team needs to triage | AI keeps asking until filled. Submission is blocked otherwise. |
+| **Enrichment fields** | "Strengthen your case" extras | Offered *after* submission. Optional, used to qualify stronger leads. |
+| **Consultation fee** *(optional)* | Charge before submission | Stripe payment gates the submission. No fee, no queue entry. |
+| **Legal disclaimer** | Pre-collection notice | Shown once, before contact info. Configurable per template. |
+
+The mental model: **required = "must have to triage," enrichment = "nice to have for the consult."** Don't over-stuff required fields — every additional required question is a chance for the lead to drop off.
+
+## What goes in a field
+
+Every field has the same shape:
+
+- `key` — internal identifier you'll see in the queue (e.g. `case_summary`)
+- `label` — what the AI says to the client (e.g. "What happened?")
+- `type` — `text`, `select`, `date`, `boolean`, or `number`
+- `required` *(optional)* — gate submission on this field
+- `dependsOn` *(optional)* — only ask this if a parent answer matches
+
+<DocPlaceholder
+  kind="screenshot"
+  src="/media/docs/intake/field-editor-annotated.png"
+  description="Annotated IntakeTemplatesPage field editor with ① required toggle, ② enrichment toggle, ③ conditional dependsOn selector."
+/>
+
+## Standard fields you'll usually want required
+
+The shorter the required list, the higher the completion rate. The fields most firms need to triage at all:
+
+- **Contact** — name, email, phone (the AI collects these in one step).
+- **Matter type** — single-select against your practice areas.
+- **Case summary** — short free-text describing what happened.
+- **Jurisdiction / location** — where the matter sits (used for filing-deadline calculations and conflict checks).
+- **Urgency** — low / medium / high.
+
+## Enrichment fields: the upsell to better leads
+
+Once a client submits, the widget can offer "strengthen your case" — an optional enrichment phase. This is where you ask the questions that aren't worth losing the lead over:
+
+- Opposing party
+- Documents the client has on hand
+- Court dates or deadlines
+- Desired outcome
+- Prior counsel involvement
+
+If the client skips, you still have a triageable submission. If they engage, your attorney walks into the consult with a much fuller picture.
+
+## Conditional logic with `dependsOn`
+
+Most intakes have questions that only apply in some cases. Use `dependsOn` to hide them when they don't:
+
+```yaml
+- key: court_date
+  label: "When is your next court date?"
+  type: date
+  dependsOn:
+    field: has_open_case
+    value: true
+```
+
+The AI only asks `court_date` when the client previously answered `true` to `has_open_case`. This keeps conversations short and stops the widget from feeling like a form.
+
+## Consultation fees
+
+If your practice charges for the first consultation, set the fee on the template:
+
+1. **Open the template.** Toggle **Require payment**.
+2. **Set the amount** in dollars.
+3. **Save.** The widget will now collect the fee via Stripe before submitting.
+
+What the client experiences:
+
+1. Conversational intake collects the required fields.
+2. A Stripe payment card appears in the chat thread.
+3. On successful payment, the intake submits to your queue.
+4. (Optional) The enrichment phase begins — they're already paid, you're already in their corner.
+
+What you experience:
+
+- The intake reaches your queue **only after** payment clears.
+- The payment is recorded against the future matter.
+- Refunds are managed in the dashboard if the matter is declined.
+
+<DocPlaceholder
+  kind="screenshot"
+  src="/media/docs/intake/payment-card-in-chat.png"
+  description="Stripe Elements payment card in the chat thread, between contact collection and submission confirmation."
+/>
+
+## Multi-language and RTL
+
+Templates render in 18 languages. The widget detects browser language and switches automatically. Arabic intakes render right-to-left end-to-end. You author the template once; the AI translates question phrasing for the active locale.
+
+[Read more about multilingual intake](/ai-chat/modern-intake-flow)
+
+## Testing a template before you go live
+
+1. **Open your widget URL** from the dashboard in a private browser window.
+2. **Run a happy-path submission** with realistic answers.
+3. **Confirm the submission lands** in your intake queue, with all the fields you expected.
+4. **Confirm the right team member** gets the notification (in-app, email, or push).
+5. **Run a payment-required path** if you've enabled fees — use a Stripe test card.
+
+Document any field labels that confuse you during the test — those are the ones real clients will misread first.
+
+## Common mistakes
+
+- **Too many required fields.** Anything you can ask in the consult shouldn't gate submission.
+- **Required questions that need legal nuance.** "Do you think this is negligence?" is an enrichment question, not a required one — clients won't know the answer.
+- **No `dependsOn` rules.** The widget feels like a form when it asks 20 questions in a row regardless of context.
+- **Enrichment fields with leading questions.** If your enrichment phase reads like a sales script, the lead bails.
+- **Forgotten consultation fee on free-consult firms.** Conversely: if you don't charge for first consults, leave the fee off — gating on a $0 payment is a waste.
+
+## Next: review the queue
+
+When a submission lands, your team triages it from the intake queue.
+
+[Continue to Review and Triage Client Intakes](/features/review-and-triage-intake)

@@ -1,7 +1,7 @@
 ---
 title: "Manage Payouts and Revenue Distribution Securely"
 metaTitle: "Payouts | Blawby Legal Payments"
-desc: "Set up and manage Blawby payouts so client funds route correctly and your firm can monitor transfer timing with confidence."
+desc: "Configure Stripe Connect, route trust-eligible funds correctly, and monitor payout timing in your Blawby dashboard."
 image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public"
 author: "Paul Chris Luke"
 authorImage: "/images/logo.png"
@@ -9,104 +9,129 @@ category: "payments"
 contentType: "lesson"
 order: 50
 createdAt: "01/01/2024"
-updatedAt: "01/01/2024"
+updatedAt: "05/07/2026"
+lastVerified: "05/07/2026"
 tags:
   - Payouts
-  - Transfers
-  - Withdrawals
+  - Stripe-Connect
+  - Trust-Account
 keywords:
   - Law firm payouts
+  - Stripe Connect law firm
   - Trust account payouts
-  - Legal payment transfers
-  - Blawby payouts
+  - Blawby payouts schedule
   - IOLTA payout flow
 targetAudience: "practice-owners"
 searchIntent: "informational"
 primaryKeyword: "law firm payouts"
-secondaryKeywords: ["bank transfers", "withdrawals", "fast transfers"]
-summary: "Configure and monitor payouts in Blawby so your payment operations remain predictable and compliant."
+secondaryKeywords: ["stripe connect", "trust account payouts", "fast transfers"]
+summary: "Configure Stripe Connect and trust routing in Blawby so payouts are timely, traceable, and compliant."
 schemaType: "Article"
 faq:
-  - question: "Do I have to use a trust account for payouts?"
-    answer: "Yes. To remain compliant with IOLTA rules, Blawby requires you to use your law firm’s trust account for all payouts."
-  - question: "Are processing fees deducted from client payments?"
-    answer: "No. Blawby advances all processing fees up front and bills them to your operating account on a 30-day cycle. Client payments are deposited in full."
+  - question: "Where do I configure my payout bank account?"
+    answer: "Through Stripe Connect. In Blawby, open Settings → Payments and click Connect Stripe — Stripe's hosted onboarding handles bank linking and identity verification. Blawby never stores your bank details."
+  - question: "Are processing fees deducted from trust-eligible client payments?"
+    answer: "No. Trust-eligible payments deposit in full to your trust account. Processing and platform fees are billed separately to a card linked to your operating account."
   - question: "How long does it take to receive funds?"
-    answer: "Credit card payments are typically paid out in 2 business days, and ACH payments in 5 business days. New accounts may experience a temporary 7–14 day delay for their first payout."
-  - question: "What if my payout account fails verification?"
-    answer: "You’ll receive a notification in your dashboard with next steps. Common issues include incorrect routing numbers or missing documents."
-  - question: "Can I update my payout account later?"
-    answer: "Yes. You can update your external payout account details at any time from the Blawby dashboard under Settings > External payout accounts."
+    answer: "Stripe payouts typically settle in 2 business days for cards and 5 for ACH. First payouts on a new connected account commonly take 7–14 days."
 noindex: false
 ---
 
 # Managing Payouts
 
-Blawby's payout system helps law firms manage client payments while staying compliant with trust accounting requirements. With our integrated system, your firm can:
+Blawby uses **Stripe Connect** for payouts. You don't enter routing or account numbers in Blawby — you connect Blawby to Stripe, Stripe handles bank linking and identity verification, and the connected account is what receives your payouts.
 
-- Receive funds directly into your firm's trust account
-- Stay compliant with IOLTA rules by using verified trust account information
-- Access scheduled payouts based on payment method and processing time
-- Simplify fee handling, as Blawby covers processing fees upfront and bills them on a monthly cycle
+This page covers how to set that up, how trust routing works on top of it, and how to monitor payout timing.
 
-Blawby takes care of the operational and compliance complexity behind the scenes, so your firm can focus on practicing law.
+## Setting up payouts
 
-## Setting Up Payouts
+Use the two-checkpoint flow in your Blawby dashboard.
 
-Use the following steps to set up payouts and receive funds with Blawby. This process is designed to ensure IOLTA (trust account) compliance, so you must use your trust account bank information during setup:
+### Checkpoint 1 — Link your bank to Stripe
 
-1. **Navigate to External Payout Accounts.** (1 minute) In your Blawby dashboard, navigate to Settings and click on **External payout accounts**. This is where you will manage your bank account information for payouts.
-2. **Gather Your Trust Account Bank Information.** (2 minutes) Before proceeding, make sure you have the details for your law firm's trust account ready. You will need the account number, routing number, and the name on the account. Using your trust account is required for compliance with legal and financial regulations.
-3. **Submit Business and Representative Information.** (2 minutes) Provide all required business details and upload any necessary documents for verification, such as government-issued identification. Enter your trust account bank information when prompted. Click the **Submit details** button to begin. It's recommended that the person filling out the information is either the owner of the business or someone with a significant role, such as a director or executive.
-4. **Verification and Next Steps.** (1 minute) In most cases, verification is immediate and your account will be eligible to receive payouts right away. If your account is flagged for further verification, you will see an alert in your dashboard guiding you through the next steps. If you have trouble verifying your account, visit [Help & Support](/help) for assistance.
+1. Open **Settings → Payments**.
+2. Click **Connect Stripe**.
+3. You're redirected to Stripe's hosted onboarding. Complete:
+   - Business type, EIN, and registered address.
+   - Beneficial-owner / representative details.
+   - The bank account you want payouts to land in.
+4. On completion, you're redirected back to Blawby. Checkpoint 1 shows **Linked**.
 
-## How It Works
+### Checkpoint 2 — Charges enabled
 
-At the time of each client transaction, Blawby absorbs the processing fees incurred by financial institutions (e.g., credit card networks like American Express or ACH providers). These fees are advanced by Blawby on your behalf and the full transaction amount is credited to your trust account without deductions.
+Stripe verifies your business and identity in the background. For most firms this clears in minutes; occasionally Stripe asks for additional documents (an ID, a business registration). When approved, the second checkpoint shows **Charges enabled**, and you can collect payments.
 
-Blawby tracks all advanced processing fees and applicable platform fees in an accrued fee ledger, which is reconciled and billed on a rolling 30-day cycle. This means you will be invoiced every 30 days for the total of these fees.
+If charges stay pending, open the Stripe dashboard from the Blawby link — Stripe will list anything still needed. The Blawby checkpoint clears automatically once Stripe approves.
 
-For more information on current processing and platform fees, visit [Pricing](/pricing). For payout troubleshooting, see [Help & Support](/help).
+[Read Accept Your First Payment](/quick-start/accept-first-payment) for the full Stripe Connect walkthrough.
 
-## Payout Schedule
+## How trust routing works on top of Stripe
 
-By default, Blawby processes payouts on the following schedule:
+If your firm holds unearned client funds (retainers, settlement deposits, court-fee deposits), configure trust routing in **Settings → Payments → Trust routing**:
 
-- For credit card payments: 2 business days after the payment is received
-- For ACH payments: 5 business days after the payment is received
+- **Trust-eligible payments** route in full to your trust account. Blawby never deducts fees from those dollars.
+- **Processing and platform fees** are charged separately to a card you link to your operating account.
 
-> **Note**: New accounts may have a longer initial payout delay (up to 7–14 days) for the first payout.
+This is the structural difference between Blawby and a generic processor: with Blawby, the gross amount lands in trust; with most processors, fees are netted before deposit.
 
-## Troubleshooting Payouts
+For more on the compliance model, see [IOLTA Compliance Guide](/compliance/iolta-compliance).
 
-If you encounter issues with payouts:
+## Payout schedule
 
-- Check your Blawby Dashboard for any alerts or notifications
-- Verify that your bank account information is correct
-- Ensure your account is in good standing and all verification steps are complete
+Stripe pays out on these defaults for new connected accounts:
 
-## Frequently Asked Questions
+- **Card payments** — typically 2 business days after settlement.
+- **ACH payments** — typically 5 business days after settlement.
+- **First payout on a new account** — often 7–14 days while Stripe completes risk review.
 
-### Do I have to use a trust account for payouts?
+After your first few payouts, your schedule normalizes. You can adjust payout cadence (daily, weekly, monthly) directly in the Stripe dashboard.
 
-Yes. To remain compliant with IOLTA rules, Blawby requires you to use your law firm’s trust account for all payouts.
+## Monitoring payouts
+
+The **Payouts** view in Blawby shows recent payouts with date, amount, and status. Click through to the linked Stripe payout for the per-transaction breakdown. Anything Stripe knows is one click away.
+
+Notifications fire on:
+
+- Payout sent.
+- Payout failed (e.g., bank account closed).
+- Stripe requested additional documentation.
+
+## Troubleshooting
+
+**Charges stuck in pending.**
+Stripe is reviewing documents. The Stripe dashboard will list what's needed. Resolve there; the Blawby checkpoint clears automatically.
+
+**A payout failed.**
+Most common cause: bank account closed or routing changed. Update bank details in the Stripe dashboard. Stripe automatically retries failed payouts.
+
+**The amount paid out doesn't match what I expect.**
+Stripe's payout reports break down per-transaction. Refunds, chargebacks, and disputed amounts are netted from payouts; the report shows each.
+
+**A specific transaction didn't pay out.**
+Check the matter or invoice the payment was tied to. ACH settlement takes a few business days; high-risk transactions may be held briefly by Stripe.
+
+## Frequently asked questions
+
+### Where do I configure my bank account?
+
+Through Stripe Connect, not in Blawby directly. **Settings → Payments → Connect Stripe** sends you to Stripe's hosted onboarding. Update bank details later from the Stripe dashboard.
+
+### Do I have to use a trust account?
+
+Not unless your firm holds unearned client funds. If you do, configure trust routing — required for IOLTA compliance.
 
 ### Are processing fees deducted from client payments?
 
-No. Blawby advances all processing fees up front and bills them to your operating account on a 30-day cycle. Client payments are deposited in full.
+Not from trust-eligible payments. Trust dollars deposit in full; fees are billed separately to your operating-account card.
 
-### How long does it take to receive funds?
+### How fast are payouts?
 
-Credit card payments are typically paid out in 2 business days, and ACH payments in 5 business days. New accounts may experience a temporary 7–14 day delay for their first payout.
-
-### What if my payout account fails verification?
-
-You’ll receive a notification in your dashboard with next steps. Common issues include incorrect routing numbers or missing documents.
+T+2 for cards, T+5 for ACH on established accounts. New accounts: 7–14 days for the first payout, then normal schedule.
 
 ### Can I update my payout account later?
 
-Yes. You can update your external payout account details at any time from the Blawby dashboard under **Settings > External payout accounts**.
+Yes — directly in the Stripe dashboard. Blawby reads the connected account; any change in Stripe takes effect immediately.
 
 ---
 
-Ready to streamline your law firm's payouts? [Register for Blawby](https://ai.blawby.com/register) or [contact support](https://ai.blawby.com/contact) to get started.
+Ready to set up payouts? [Register for Blawby](https://ai.blawby.com/register) or [contact support](https://ai.blawby.com/contact).

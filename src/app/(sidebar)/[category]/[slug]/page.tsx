@@ -6,6 +6,7 @@ import {
 } from "@/components/breadcrumbs";
 import { NextPageLink } from "@/components/next-page-link";
 import { SidebarLayoutContent } from "@/components/sidebar-layout";
+import { formatSectionLabel } from "@/utils/section-label";
 import TableOfContents from "@/components/table-of-contents";
 import { Video } from "@/components/video-player";
 import { siteConfig } from "@/config/site";
@@ -25,6 +26,7 @@ import fs from "fs";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import path from "path";
+import { Fragment } from "react";
 function escapeJsonLd(data: unknown) {
   if (data === null || data === undefined) return "";
   return JSON.stringify(data).replace(/</g, "\\u003c");
@@ -108,18 +110,50 @@ export default async function Page({
   const lessonData = isLesson ? await getLesson(slug) : null;
   const structuredData = generateContentStructuredData(content);
 
-  // Backlink: lessons → /products, docs → /docs, articles → /solutions
-  const parentLink =
-    content.origin === "lessons"
-      ? { label: "Products", href: "/products" }
-      : content.origin === "docs"
-      ? { label: "Docs", href: "/docs" }
-      : { label: "Solutions", href: "/solutions" };
+  // Origin → its real landing page route. Used as the deepest *linked* node
+  // in the breadcrumb trail; the label between it and the page title comes
+  // from frontmatter (group → category) so we never hardcode IA names.
+  const ORIGIN_LANDING: Record<string, { label: string; href: string }> = {
+    lessons: { label: "Products", href: "/products" },
+    docs: { label: "Docs", href: "/docs" },
+    solutions: { label: "Solutions", href: "/solutions" },
+    articles: { label: "Solutions", href: "/solutions" },
+  };
+  const originLanding =
+    ORIGIN_LANDING[content.origin] ?? {
+      label: formatSectionLabel(content.origin),
+      href: `/${content.origin}`,
+    };
+
+  // Build the trail dynamically from the content's own metadata:
+  //   Home > {Origin landing} > {Category} > [{Group}] > {Page title}
+  // The category step is skipped when it would duplicate the origin label
+  // (e.g. solutions content where origin=solutions and category=solutions).
+  const categoryLabel = formatSectionLabel(content.category);
+  const breadcrumbTrail: Array<{
+    name: string;
+    href?: string;
+  }> = [{ name: originLanding.label, href: originLanding.href }];
+
+  if (
+    categoryLabel.toLowerCase() !== originLanding.label.toLowerCase() &&
+    content.category.toLowerCase() !== content.origin.toLowerCase()
+  ) {
+    breadcrumbTrail.push({ name: categoryLabel });
+  }
+
+  if (content.group) {
+    breadcrumbTrail.push({ name: content.group });
+  }
+
+  breadcrumbTrail.push({ name: content.title || "" });
 
   const breadcrumbItems = [
     { name: "Home", url: absoluteUrl() },
-    { name: parentLink.label, url: absoluteUrl(parentLink.href) },
-    { name: content.title || "", url: absoluteUrl(content.href) },
+    ...breadcrumbTrail.map((step) => ({
+      name: step.name,
+      url: step.href ? absoluteUrl(step.href) : absoluteUrl(content.href),
+    })),
   ];
   const breadcrumbSchema = getBreadcrumbSchema(breadcrumbItems);
 
@@ -181,10 +215,16 @@ export default async function Page({
       breadcrumbs={
         <Breadcrumbs>
           <BreadcrumbHome />
-          <BreadcrumbSeparator />
-          <Breadcrumb href={parentLink.href}>{parentLink.label}</Breadcrumb>
-          <BreadcrumbSeparator />
-          <Breadcrumb>{content.title}</Breadcrumb>
+          {breadcrumbTrail.map((step, idx) => (
+            <Fragment key={`${idx}-${step.name}`}>
+              <BreadcrumbSeparator />
+              {step.href ? (
+                <Breadcrumb href={step.href}>{step.name}</Breadcrumb>
+              ) : (
+                <Breadcrumb>{step.name}</Breadcrumb>
+              )}
+            </Fragment>
+          ))}
         </Breadcrumbs>
       }
     >
@@ -212,8 +252,27 @@ export default async function Page({
       )}
 
       {/* Content area */}
-      <div className="mx-auto flex max-w-2xl gap-x-10 py-10 sm:py-14 lg:max-w-5xl">
+      <div className="mx-auto flex max-w-2xl gap-x-10 pt-6 pb-10 sm:pt-8 sm:pb-14 lg:max-w-5xl">
         <div className="w-full flex-1">
+          {content.lastVerified && (
+            <p
+              className={
+                "mb-6 flex flex-wrap items-center justify-end gap-2 " +
+                "border-b border-gray-200 pb-4 text-sm text-gray-700 " +
+                "dark:border-white/10 dark:text-gray-400"
+              }
+            >
+              Last verified{" "}
+              <time dateTime={content.lastVerified}>
+                {new Date(content.lastVerified).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  timeZone: "UTC",
+                })}
+              </time>
+            </p>
+          )}
           <div id="content" className="prose">
             <Content />
           </div>

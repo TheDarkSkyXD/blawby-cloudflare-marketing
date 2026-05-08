@@ -1,7 +1,6 @@
 ---
-title: "Accept Your First Payment"
-metaTitle: "Accept Your First Payment — Blawby Payments"
-desc: "Set up Blawby payments, connect bank accounts, and collect your first client payment with trust-safe routing."
+title: "Accept Your First Payment with Stripe Connect"
+desc: "Connect Stripe to your Blawby practice in two checkpoints, configure trust vs. operating routing, and send your first invoice from a matter."
 image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public"
 author: "Paul Chris Luke"
 authorImage: "/images/logo.png"
@@ -9,118 +8,147 @@ category: "quick-start"
 contentType: "guide"
 order: 30
 createdAt: "02/10/2024"
-updatedAt: "02/10/2024"
+updatedAt: "05/07/2026"
+lastVerified: "05/07/2026"
 tags:
   - Payments
+  - Stripe-Connect
+  - Trust-Account
   - Setup
-  - Configuration
 keywords:
-  - Accept first payment blawby
-  - Law firm payment setup
-  - Connect trust account payments
-  - Legal client payment processing
-  - First invoice payment
+  - Connect Stripe Blawby
+  - Law firm Stripe Connect
+  - Trust account routing law firm
+  - First invoice law firm
+  - Blawby payments setup
 difficulty: "beginner"
 prerequisites: ["create-practice-account"]
 timeToComplete: "15 minutes"
 nextSteps: ["set-up-client-intake"]
 schemaType: "HowTo"
 faq:
-  - Question: "How long does it take to set up payment processing?"
-    answer: "Payment processing setup takes about 15 minutes. Bank account verification may take 1-2 business days, but you can start accepting payments immediately."
-  - Question: "What payment methods can I accept?"
-    answer: "You can accept credit/debit cards, bank transfers (ACH), and set up payment plans. All methods are IOLTA compliant for trust accounts."
+  - question: "Do I need a separate bank account to start?"
+    answer: "Stripe Connect handles bank linking on Stripe's side — you don't enter routing or account numbers in Blawby. If your practice will hold client funds, you'll separately configure trust routing once Stripe is connected."
+  - question: "How long does it take to start collecting payments?"
+    answer: "About 15 minutes for the two Stripe Connect checkpoints. Charges become available as soon as the second checkpoint clears; payouts may take a few business days for new accounts."
+  - question: "Are processing fees deducted from the trust account?"
+    answer: "No. Blawby is built so processing and platform fees never come out of trust. Fees are charged separately to a card linked to your operating account."
 noindex: false
 ---
 
 # Accept Your First Payment
 
-Your first successful payment confirms your setup is working and your firm can collect funds without manual follow-up.
+Blawby uses **Stripe Connect** for payments. You don't enter bank account numbers in Blawby — you connect to Stripe, and Stripe handles the bank link, identity verification, and payouts. Your job in Blawby is to confirm the connection and configure trust vs. operating routing.
 
-## Before You Begin
+This page covers both checkpoints, plus how to send your first invoice from a matter.
 
-You'll need:
+<DocPlaceholder
+  kind="video"
+  src="/media/docs/payments/stripe-connect.mp4"
+  description="60-second walkthrough of the two Stripe Connect checkpoints in Blawby — link bank, enable charges — followed by sending the first invoice."
+/>
 
-- Active Blawby practice account
-- Business bank account information
-- Business details (EIN, business address)
-- A team member responsible for billing setup
+## The two Stripe Connect checkpoints
 
-## Step 1: Connect Your Bank Account
+Blawby's onboarding shows two checkpoints in your dashboard. Both must clear before your firm can collect.
 
-1. Log into your Blawby dashboard
-2. Go to **Settings → Payments**
-3. Click **Connect Bank Account**
-4. Enter routing number, account number, account type, and account holder name
+### Checkpoint 1 — Link bank account
 
-5. Blawby will make two small deposits (under $1.00)
-6. Check your bank account in 1-2 business days
-7. Enter the deposit amounts in your dashboard
-8. Confirm your account is verified
+1. Open **Settings → Payments**.
+2. Click **Connect Stripe**.
+3. You'll be redirected to Stripe's hosted onboarding to confirm:
+   - Business type and EIN
+   - Beneficial-owner / representative details
+   - The bank account you want payouts to land in
+4. When you complete Stripe's flow, you're redirected back. The first checkpoint shows **Linked**.
 
-Why this matters: verified payout details reduce failed transfers and payout delays.
+> **What's happening here.** Stripe is creating a connected account for your firm. Blawby stores only the connected-account ID; sensitive bank details live with Stripe. This is what keeps Blawby out of PCI and banking-secrecy scope on your behalf.
 
-## Step 2: Configure Payment Methods
+### Checkpoint 2 — Enable charges
 
-Enable the payment methods your clients use most:
+Stripe verifies your identity and business documents in the background. This usually takes a few minutes for low-risk firms; occasionally longer if Stripe wants additional documentation.
 
-- Credit/debit cards for convenience and faster completion
-- ACH for clients who prefer bank transfer
+When Stripe approves, the second checkpoint flips to **Charges enabled**. You can now:
 
-If available in your dashboard, review default payment limits and set limits that match your matter sizes.
+- Send invoices that include a Stripe-hosted pay button
+- Collect consultation fees on intake (if your template uses one)
+- Generate pre-filled payment links
 
-Why this matters: offering both cards and ACH increases completion rates and reduces client friction.
+If charges stay pending, open the Stripe dashboard — Stripe will list any documents it still needs. You don't need to re-do anything in Blawby; the checkpoint clears automatically once Stripe approves.
 
-## Step 3: IOLTA Trust Account Setup
+<DocPlaceholder
+  kind="screenshot"
+  src="/media/docs/payments/stripe-checkpoints.png"
+  description="Stripe checkpoint card in Settings → Payments — checkpoint 1 (Linked), checkpoint 2 (Charges enabled)."
+/>
 
-If you hold unearned client funds, set up your IOLTA trust account:
+## Trust vs. operating routing
 
-1. Go to **Settings → Trust Accounts**
-2. Click **Add Trust Account**
-3. Enter trust account details and confirm account type
-4. Review routing rules for trust and operating funds
+If your practice ever holds unearned client funds (retainers, settlement deposits, court filing-fee deposits), configure trust routing now — *before* you collect anything that should land in trust.
 
-Why this matters: correct trust setup protects client funds and reduces compliance risk.
+### How Blawby keeps trust dollars whole
 
-## Step 4: Create Your First Invoice
+Blawby's fee model is built for trust compliance:
 
-1. Go to **Payments → Create Invoice** (or create from a client profile)
-2. Enter client information:
-   - Client name and contact details
-   - Matter description
+- **Trust-eligible payments** route to your trust account in full — Blawby never deducts fees from those dollars.
+- **Processing and platform fees** are billed separately to a card you connect to your operating account.
 
-3. Add line items:
-   - Service description
-   - Quantity or hours
-   - Rate or flat amount
+This is the difference between Blawby and a generic processor that nets fees off the top: with Blawby, the trust account always receives the gross amount.
 
-4. Set payment terms:
-   - Due date
-   - Accepted payment methods
+### Setup
 
-5. Preview and send the invoice
+1. Open **Settings → Payments → Trust routing**.
+2. Add the trust-account details Stripe should pay to. (You'll usually do this through Stripe's flow with a separate connected account or routing rule, depending on how your firm structures trust.)
+3. Add the operating-account card that fees will be billed to.
+4. Confirm. From this point, retainer and trust-eligible invoices route automatically.
 
-## Next Steps
+If you don't hold client funds, leave trust routing off. All payments will land in your operating account.
 
-Your payment setup is now ready for live use. Next, make sure your internal process is clear so your team handles successful, failed, and delayed payments consistently.
+[Read the IOLTA Compliance Guide](/compliance/iolta-compliance) for more on how this fee model works.
 
-1. Send your first live invoice.
-2. Confirm payment alerts reach the right person.
-3. Review payout timing in your dashboard.
-4. Document who owns billing follow-up in your firm.
+## Send your first invoice from a matter
 
-## Need Help?
+The simplest first-payment path: log a few minutes of time on a matter, then generate an invoice.
 
-If you encounter payment processing issues:
+1. Open or create a **matter** for the client. (See [Matters Overview](/features/matters-overview).)
+2. On the **Work** tab, add a time entry — start/end or duration, billable, with a short description.
+3. Switch to the **Billing** tab. The **unbilled summary** card shows your total billable hours plus any expenses.
+4. Click **Generate invoice**. Edit line items, add a flat fee or retainer draw if relevant, then **Send**.
+5. The client gets an email with a hosted Stripe pay link. They can pay by card or ACH without creating an account.
+6. The invoice flips to **Paid** automatically when payment clears. Notifications fire to your team via in-app, email, and push (OneSignal).
 
-- **Payment Support**: [Blawby Help](/help)
-- **Compliance Resources**: [IOLTA Compliance Guide](/compliance/iolta-compliance)
-- **Operations Playbook**: [Failed Payment & Chargeback SOP](/features/failed-payment-and-chargeback-sop)
+<DocPlaceholder
+  kind="screenshot"
+  src="/media/docs/payments/first-invoice.png"
+  description="A draft invoice generated from unbilled time, with line items pulled from time entries and the Send button highlighted."
+/>
 
----
+## Pre-filled payment links
 
-## Ready for Day-One Operations?
+For quick collections that aren't a full invoice (consultation fees outside intake, donations, retainer top-ups), use a payment link:
 
-Use a day-one checklist to align account setup, compliance verification, payment readiness, and team responsibilities.
+```
+https://blawby.com/your-firm-slug?amount=12500
+```
 
-[Open the Day-One Checklist](/quick-start/day-one-checklist)
+The `amount` parameter is in cents. `12500` = $125.00. Generate the link from **Settings → Payments → Payment link**, then change the amount per request directly in the URL.
+
+## Common questions
+
+**The first checkpoint cleared but charges aren't enabled.**
+Stripe is reviewing documents. Open your Stripe dashboard from **Settings → Payments → View on Stripe** — Stripe will list anything still needed. The Blawby checkpoint clears automatically once Stripe approves.
+
+**My first payout hasn't landed.**
+Stripe's first payout for a new connected account commonly takes 7–14 days. Subsequent payouts follow Stripe's standard schedule (typically T+2 for cards, T+5 for ACH).
+
+**A client paid by ACH and the invoice is "Pending."**
+ACH settlement takes a few business days. The invoice flips to Paid when Stripe confirms — no action needed from you.
+
+**I want to refund a payment.**
+Open the invoice → **Refund**. Refunds use Stripe's refund API; the invoice records the refund and notifies the client.
+
+## Next: set up intake so payment-collection happens at the right point
+
+Your intake template can require payment before submission, or after engagement acceptance, or not at all. Configure it to match your practice's free vs. paid consult policy.
+
+[Continue to Set Up Client Intake](/features/set-up-client-intake)

@@ -99,10 +99,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={clsx(
         GeistMono.variable,
         InterVariable.variable,
-        "scroll-pt-16 font-sans antialiased dark:bg-gray-950",
+        "scroll-pt-16 bg-white font-sans antialiased dark:bg-black",
       )}
     >
       <head>
@@ -112,7 +113,7 @@ export default function RootLayout({
         />
         {/* Manifest is handled by metadata.manifest, no need for manual <link> */}
       </head>
-      <body className="dark:bg-gray-950">
+      <body className="bg-white dark:bg-black">
         <WebVitals />
         <div className="isolate">{children}</div>
         <Footer />

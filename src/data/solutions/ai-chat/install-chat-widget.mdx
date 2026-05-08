@@ -9,7 +9,8 @@ category: "ai-chat"
 contentType: "guide"
 order: 30
 createdAt: "02/10/2024"
-updatedAt: "04/30/2026"
+updatedAt: "05/07/2026"
+lastVerified: "05/07/2026"
 tags:
   - Installation
   - Widget
@@ -98,37 +99,24 @@ If your website uses a builder, you can usually add the widget without coding.
 
 Use this section if your web developer wants script-level installation.
 
-```html
-<script>
-  (function (w, d, s, o, f, js, fjs) {
-    w["BlawbyWidget"] = o;
-    w[o] =
-      w[o] ||
-      function () {
-        (w[o].q = w[o].q || []).push(arguments);
-      };
-    js = d.createElement(s);
-    fjs = d.getElementsByTagName(s)[0];
-    js.async = 1;
-    js.src = f;
-    fjs.parentNode.insertBefore(js, fjs);
-  })(
-    window,
-    document,
-    "script",
-    "blawby",
-    "https://widget.blawby.com/embed.js",
-  );
+> **Get the exact snippet from your dashboard.** Open your practice's widget settings in Blawby and copy the install code shown there — it includes your firm's slug, default styling, and any locale options you've configured. The example below shows the shape of what you'll see; the canonical version comes from the dashboard.
 
-  blawby("init", {
-    practiceId: "YOUR_PRACTICE_ID",
-    position: "bottom-right",
-    theme: "light",
-  });
-</script>
+```html
+<script
+  async
+  src="https://ai.blawby.com/widget/embed.js?slug=YOUR_PRACTICE_SLUG"
+></script>
 ```
 
-Replace `YOUR_PRACTICE_ID` with your practice ID from Blawby.
+Replace `YOUR_PRACTICE_SLUG` with the slug shown in your practice settings (e.g. `acme-law`).
+
+### What the widget supports out of the box
+
+- **AI-guided intake** in 18 languages with full RTL for Arabic.
+- **File uploads** up to 25 MB per file (images, video, audio, PDF, Word).
+- **Optional consultation fees** — gate submission on a Stripe payment when you've configured one for the intake template.
+- **Conditional fields** — the AI only asks follow-up questions when a parent answer matches.
+- **Practice branding** — your firm's name, logo, and accent color, configured in the dashboard (no code changes needed).
 
 ## Next Step
 

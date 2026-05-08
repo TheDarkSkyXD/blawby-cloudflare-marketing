@@ -3,13 +3,15 @@
 import { IconButton } from "@/components/icon-button";
 import { NAV_SECTIONS, PRODUCT_SECTION_IDS } from "@/components/navbar";
 import type { Module } from "@/data/lessons";
+import { ChevronDownIcon } from "@/icons/chevron-down-icon";
 import { SidebarIcon } from "@/icons/sidebar-icon";
+import { formatSectionLabel } from "@/utils/section-label";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { clsx } from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type React from "react";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useId, useState } from "react";
 
 // ─── Context ──────────────────────────────────────────────────────────────────
 
@@ -29,11 +31,80 @@ export const SidebarContext = createContext<{
 
 import type { ContentItem } from "@/lib/content";
 
+type SidebarLeaf = { kind: "leaf"; href: string; label: string };
+type SidebarGroup = { kind: "group"; label: string; items: SidebarLeaf[] };
+type SidebarItem = SidebarLeaf | SidebarGroup;
+
 type SidebarSection = {
   sectionTitle: string;
-  items: { href: string; label: string }[];
+  items: SidebarItem[];
   id?: string;
 };
+
+/**
+ * Build the sidebar tree for one category: items with no `group` frontmatter
+ * become top-level leaves; items sharing a `group` collapse under a single
+ * group node, sorted by `groupOrder` then `order`.
+ */
+function buildSidebarItemsForCategory(
+  categoryArticles: ContentItem[],
+): SidebarItem[] {
+  const groups = new Map<
+    string,
+    { groupOrder: number; minOrder: number; articles: ContentItem[] }
+  >();
+  const ungrouped: ContentItem[] = [];
+
+  for (const a of categoryArticles) {
+    if (a.group) {
+      const slot = groups.get(a.group);
+      if (slot) {
+        slot.articles.push(a);
+        slot.minOrder = Math.min(slot.minOrder, a.order ?? 999);
+      } else {
+        groups.set(a.group, {
+          groupOrder: a.groupOrder ?? 999,
+          minOrder: a.order ?? 999,
+          articles: [a],
+        });
+      }
+    } else {
+      ungrouped.push(a);
+    }
+  }
+
+  type Entry = { sortKey: number; item: SidebarItem };
+  const entries: Entry[] = [];
+
+  for (const a of ungrouped) {
+    entries.push({
+      sortKey: a.order ?? 999,
+      item: {
+        kind: "leaf",
+        href: `/${a.category.toLowerCase()}/${a.slug}`,
+        label: a.title || "",
+      },
+    });
+  }
+
+  for (const [label, slot] of groups) {
+    const items = slot.articles
+      .slice()
+      .sort((a, b) => (a.order ?? 999) - (b.order ?? 999))
+      .map<SidebarLeaf>((a) => ({
+        kind: "leaf",
+        href: `/${a.category.toLowerCase()}/${a.slug}`,
+        label: a.title || "",
+      }));
+    entries.push({
+      sortKey: slot.groupOrder !== 999 ? slot.groupOrder : slot.minOrder,
+      item: { kind: "group", label, items },
+    });
+  }
+
+  entries.sort((a, b) => a.sortKey - b.sortKey);
+  return entries.map((e) => e.item);
+}
 
 function useSidebarSections(
   modules: Module[],
@@ -48,7 +119,8 @@ function useSidebarSections(
   if (PRODUCT_SECTION_IDS.has(segment.toLowerCase() as any) || segment === "products") {
     return modules.map((mod) => ({
       sectionTitle: mod.title,
-      items: mod.lessons.map((lesson) => ({
+      items: mod.lessons.map<SidebarLeaf>((lesson) => ({
+        kind: "leaf",
         href: `/${lesson.category.toLowerCase()}/${lesson.slug}`,
         label: lesson.title || "",
       })),
@@ -59,38 +131,36 @@ function useSidebarSections(
     const sectionArticles = allContent.filter((a) => a.origin === "solutions");
     const categories = Array.from(new Set(sectionArticles.map((a) => a.category)));
     return categories.map((cat) => ({
-      sectionTitle: cat.replace(/-/g, " "),
-      items: sectionArticles
-        .filter((a) => a.category.toLowerCase() === cat.toLowerCase())
-        .map((a) => ({
-          href: `/${a.category.toLowerCase()}/${a.slug}`,
-          label: a.title || "",
-        })),
+      sectionTitle: cat,
+      items: buildSidebarItemsForCategory(
+        sectionArticles.filter(
+          (a) => a.category.toLowerCase() === cat.toLowerCase(),
+        ),
+      ),
     }));
   }
 
   if (segment === "docs") {
     const sectionDocs = allContent.filter((a) => a.origin === "docs");
     const categories = ["quick-start", "features", "reference"];
-    return categories.map((cat) => {
-      const categoryArticles = sectionDocs.filter(
-        (a) => a.category.toLowerCase() === cat.toLowerCase()
-      );
-      return {
-        sectionTitle: cat.replace(/-/g, " "),
-        items: categoryArticles.map((a) => ({
-          href: `/${a.category.toLowerCase()}/${a.slug}`,
-          label: a.title || "",
-        })),
-      };
-    }).filter(s => s.items.length > 0);
+    return categories
+      .map((cat) => {
+        const categoryArticles = sectionDocs.filter(
+          (a) => a.category.toLowerCase() === cat.toLowerCase(),
+        );
+        return {
+          sectionTitle: cat,
+          items: buildSidebarItemsForCategory(categoryArticles),
+        };
+      })
+      .filter((s) => s.items.length > 0);
   }
 
   if (segment === "pricing") {
     return [
       {
         sectionTitle: "Pricing",
-        items: [{ href: "/pricing", label: "Overview" }],
+        items: [{ kind: "leaf", href: "/pricing", label: "Overview" }],
       },
     ];
   }
@@ -100,8 +170,8 @@ function useSidebarSections(
       {
         sectionTitle: "Legal",
         items: [
-          { href: "/privacy", label: "Privacy Policy" },
-          { href: "/terms", label: "Terms of Service" },
+          { kind: "leaf", href: "/privacy", label: "Privacy Policy" },
+          { kind: "leaf", href: "/terms", label: "Terms of Service" },
         ],
       },
     ];
@@ -113,29 +183,26 @@ function useSidebarSections(
   // Match active article by full route to avoid slug collisions
   // Fallback to category + slug match if origin disambiguation is needed
   const activeArticle = allContent.find(
-    (a) => `/${a.category.toLowerCase()}/${a.slug}` === pathname
+    (a) => `/${a.category.toLowerCase()}/${a.slug}` === pathname,
   ) || allContent.find(
-    (a) => 
-      a.slug === pathname.split("/").pop() && 
-      a.category.toLowerCase() === segment.toLowerCase()
+    (a) =>
+      a.slug === pathname.split("/").pop() &&
+      a.category.toLowerCase() === segment.toLowerCase(),
   );
-  
+
   const activeOrigin = activeArticle?.origin;
 
   const categoryArticles = allContent.filter(
     (a) =>
       a.category.toLowerCase() === segment.toLowerCase() &&
-      a.origin === activeOrigin
+      a.origin === activeOrigin,
   );
   if (!categoryArticles.length) return [];
 
   return [
     {
       sectionTitle: section.label,
-      items: categoryArticles.map((a) => ({
-        href: `/${a.category.toLowerCase()}/${a.slug}`,
-        label: a.title || "",
-      })),
+      items: buildSidebarItemsForCategory(categoryArticles),
     },
   ];
 }
@@ -153,42 +220,218 @@ function SidebarNav({
 }) {
   const pathname = usePathname();
 
+  // Track explicit user toggles for any expandable node (section or sub-group).
+  // Keys are unique paths like "Section" or "Section/Group".
+  const [overrides, setOverrides] = useState<Record<string, boolean>>({});
+
   if (!sections.length) return null;
 
+  const containsActive = (items: SidebarItem[]): boolean =>
+    items.some((item) =>
+      item.kind === "leaf"
+        ? pathname === item.href
+        : containsActive(item.items),
+    );
+
+  const isExpanded = (key: string, items: SidebarItem[]) =>
+    overrides[key] ?? containsActive(items);
+
+  const toggle = (key: string, items: SidebarItem[]) => {
+    setOverrides((prev) => ({
+      ...prev,
+      [key]: !isExpanded(key, items),
+    }));
+  };
+
   return (
-    <div className={clsx(className, "space-y-8")}>
+    <ul className={clsx(className, "relative m-0 list-none p-0")}>
       {sections.map((section) => (
-        <div key={section.sectionTitle} className="mb-10 last:mb-0">
-          <h2 className="text-xs font-semibold tracking-wider text-gray-500 uppercase dark:text-gray-400">
-            {section.sectionTitle}
-          </h2>
-          <ul className="mt-3 flex flex-col gap-0.5 border-l border-gray-950/10 dark:border-white/10">
-            {section.items.map((item) => {
-              const isActive = pathname === item.href;
-              return (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    onClick={onNavigate}
-                    aria-current={isActive ? "page" : undefined}
-                    className={clsx(
-                      "-ml-px flex border-l py-1.5 pl-4 text-sm/6 transition-colors",
-                      isActive
-                        ? "border-gray-950 font-medium text-gray-950 dark:border-white dark:text-white"
-                        : "border-transparent text-gray-600 hover:border-gray-400 hover:text-gray-950 dark:text-gray-400 dark:hover:border-white/40 dark:hover:text-white",
-                    )}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+        <SidebarSectionGroup
+          key={section.sectionTitle}
+          section={section}
+          path={section.sectionTitle}
+          isExpanded={isExpanded(section.sectionTitle, section.items)}
+          onToggle={() => toggle(section.sectionTitle, section.items)}
+          onNavigate={onNavigate}
+          pathname={pathname}
+          isExpandedFn={isExpanded}
+          toggleFn={toggle}
+        />
       ))}
-    </div>
+    </ul>
   );
 }
+
+function SidebarSectionGroup({
+  section,
+  path,
+  isExpanded,
+  onToggle,
+  onNavigate,
+  pathname,
+  isExpandedFn,
+  toggleFn,
+}: {
+  section: SidebarSection;
+  path: string;
+  isExpanded: boolean;
+  onToggle: () => void;
+  onNavigate?: () => void;
+  pathname: string;
+  isExpandedFn: (key: string, items: SidebarItem[]) => boolean;
+  toggleFn: (key: string, items: SidebarItem[]) => void;
+}) {
+  const listId = useId();
+  const sectionLabel = formatSectionLabel(section.sectionTitle);
+
+  return (
+    <li className="relative flex w-full select-none flex-col first:mt-2 last:mb-2">
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={isExpanded}
+        aria-controls={listId}
+        className={clsx(
+          "group flex w-full items-center justify-between gap-x-2 py-[6.5px]",
+          "text-sm font-normal leading-[21px]",
+          "text-gray-700 hover:text-gray-950 dark:text-gray-400 dark:hover:text-white",
+          "transition-colors",
+        )}
+      >
+        <span className="truncate">{sectionLabel}</span>
+        <ChevronDownIcon
+          className={clsx(
+            "h-1.5 w-2 stroke-current transition-transform duration-150",
+            !isExpanded && "-rotate-90",
+          )}
+        />
+      </button>
+
+      <ul
+        id={listId}
+        hidden={!isExpanded}
+        className={clsx(
+          "relative m-0 flex w-full list-none flex-col p-0 pl-3",
+          "before:absolute before:top-2 before:bottom-2 before:left-0 before:w-px",
+          "before:bg-gray-950/10 dark:before:bg-white/10 before:content-['']",
+        )}
+      >
+        {section.items.map((item) =>
+          item.kind === "leaf" ? (
+            <SidebarLeafRow
+              key={item.href}
+              item={item}
+              pathname={pathname}
+              onNavigate={onNavigate}
+            />
+          ) : (
+            <SidebarSubGroup
+              key={item.label}
+              group={item}
+              path={`${path}/${item.label}`}
+              isExpanded={isExpandedFn(`${path}/${item.label}`, item.items)}
+              onToggle={() =>
+                toggleFn(`${path}/${item.label}`, item.items)
+              }
+              onNavigate={onNavigate}
+              pathname={pathname}
+            />
+          ),
+        )}
+      </ul>
+    </li>
+  );
+}
+
+function SidebarSubGroup({
+  group,
+  isExpanded,
+  onToggle,
+  onNavigate,
+  pathname,
+}: {
+  group: SidebarGroup;
+  path: string;
+  isExpanded: boolean;
+  onToggle: () => void;
+  onNavigate?: () => void;
+  pathname: string;
+}) {
+  const listId = useId();
+
+  return (
+    <li className="flex w-full flex-col">
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={isExpanded}
+        aria-controls={listId}
+        className={clsx(
+          "flex w-full items-center justify-between gap-x-2 py-[6.5px]",
+          "text-sm font-normal leading-[21px]",
+          "text-gray-700 hover:text-gray-950 dark:text-gray-400 dark:hover:text-white",
+          "transition-colors",
+        )}
+      >
+        <span className="truncate">{group.label}</span>
+        <ChevronDownIcon
+          className={clsx(
+            "h-1.5 w-2 stroke-current transition-transform duration-150",
+            !isExpanded && "-rotate-90",
+          )}
+        />
+      </button>
+      <ul
+        id={listId}
+        hidden={!isExpanded}
+        className={clsx(
+          "relative m-0 flex w-full list-none flex-col p-0 pl-3",
+          "before:absolute before:top-2 before:bottom-2 before:left-0 before:w-px",
+          "before:bg-gray-950/10 dark:before:bg-white/10 before:content-['']",
+        )}
+      >
+        {group.items.map((item) => (
+          <SidebarLeafRow
+            key={item.href}
+            item={item}
+            pathname={pathname}
+            onNavigate={onNavigate}
+          />
+        ))}
+      </ul>
+    </li>
+  );
+}
+
+function SidebarLeafRow({
+  item,
+  pathname,
+  onNavigate,
+}: {
+  item: SidebarLeaf;
+  pathname: string;
+  onNavigate?: () => void;
+}) {
+  const isActive = pathname === item.href;
+  return (
+    <li className="flex w-full">
+      <Link
+        href={item.href}
+        onClick={onNavigate}
+        aria-current={isActive ? "page" : undefined}
+        className={clsx(
+          "flex w-full py-[6.5px] text-sm font-normal leading-[21px] transition-colors",
+          isActive
+            ? "text-gray-950 dark:text-white"
+            : "text-gray-700 hover:text-gray-950 dark:text-gray-400 dark:hover:text-white",
+        )}
+      >
+        {item.label}
+      </Link>
+    </li>
+  );
+}
+
 
 // ─── Mobile sidebar sheet ─────────────────────────────────────────────────────
 
@@ -204,7 +447,7 @@ function MobileSidebar({
   return (
     <Dialog open={open} onClose={onClose} className="xl:hidden">
       <DialogBackdrop className="fixed inset-0 bg-gray-950/25" />
-      <DialogPanel className="fixed inset-y-0 left-0 w-72 overflow-y-auto bg-white px-4 py-6 pt-20 ring ring-gray-950/10 sm:px-6 dark:bg-gray-950 dark:ring-white/10">
+      <DialogPanel className="fixed inset-y-0 left-0 w-72 overflow-y-auto bg-white px-4 py-6 pt-20 ring ring-gray-950/10 sm:px-6 dark:bg-black dark:ring-white/10">
         <SidebarNav sections={sections} onNavigate={onClose} />
       </DialogPanel>
     </Dialog>
@@ -238,32 +481,26 @@ export function SidebarLayout({
     >
       <div
         data-sidebar-collapsed={isSidebarOpen ? undefined : ""}
-        className="group"
+        className="group mx-auto flex w-full max-w-[1400px]"
       >
-        {/* Desktop sidebar — only when there are sections to show */}
+        {/* Desktop sidebar — sticky in normal flow, lives inside the centered
+            max-width container so on wide viewports it shifts toward center
+            with the content (Vercel pattern). */}
         {hasSidebar && (
           <aside
             className={clsx(
-              // Sits below the single-row navbar (h-14 = 56px)
-              "fixed inset-y-0 top-14 left-0 w-64 overflow-y-auto",
-              "border-r border-gray-950/10 dark:border-white/10",
-              "group-data-[sidebar-collapsed]:hidden max-xl:hidden",
+              "sticky top-14 hidden h-[calc(100vh-3.5rem)] w-[300px] shrink-0 overflow-y-auto xl:block",
+              "group-data-[sidebar-collapsed]:hidden",
             )}
           >
-            <nav aria-label="Sidebar navigation" className="px-5 py-6">
+            <nav aria-label="Sidebar navigation" className="px-8 py-3">
               <SidebarNav sections={sections} />
             </nav>
           </aside>
         )}
 
-        {/* Page content — shift right when desktop sidebar is visible */}
-        <div
-          className={clsx(
-            hasSidebar && "xl:ml-64 xl:group-data-[sidebar-collapsed]:ml-0",
-          )}
-        >
-          {children}
-        </div>
+        {/* Page content fills the rest of the centered container. */}
+        <div className="min-w-0 flex-1">{children}</div>
       </div>
 
       {/* Mobile sidebar */}
@@ -298,11 +535,11 @@ export function SidebarLayoutContent({
   const isHome = pathname === "/";
 
   return (
-    <>
-
-      {/* Sub-header: breadcrumbs + sidebar toggles. Below sticky nav, inside content flow. */}
-      {!isHome && (
-        <div className="flex h-10 items-center gap-x-3 border-b border-gray-950/10 bg-white px-4 sm:px-6 dark:border-white/10 dark:bg-gray-950">
+    <main className="px-4 sm:px-6">
+      {/* Inline breadcrumb row — Vercel pattern: sidebar toggle + crumbs in the
+          article gutter, scrolling with content. No background, no border. */}
+      {!isHome && (breadcrumbs || hasSidebar(pathname)) && (
+        <div className="mx-auto flex max-w-2xl items-center gap-x-3 pt-6 sm:pt-8 lg:max-w-5xl">
           {/* Mobile sidebar toggle */}
           <IconButton
             onClick={() => setIsMobileDialogOpen(!isMobileDialogOpen)}
@@ -324,11 +561,21 @@ export function SidebarLayoutContent({
               <SidebarIcon className="shrink-0 stroke-gray-950 dark:stroke-white" />
             </IconButton>
           )}
-          {breadcrumbs && <div className="min-w-0 text-sm">{breadcrumbs}</div>}
+          {breadcrumbs && (
+            <div className="min-w-0 text-sm text-gray-700 dark:text-gray-400">
+              {breadcrumbs}
+            </div>
+          )}
         </div>
       )}
 
-      <main className="px-4 sm:px-6">{children}</main>
-    </>
+      {children}
+    </main>
   );
+}
+
+function hasSidebar(pathname: string): boolean {
+  // Inline-breadcrumb row also surfaces the sidebar toggle, so render it on
+  // any non-home route. Home has no sidebar so we hide the row entirely there.
+  return pathname !== "/";
 }
