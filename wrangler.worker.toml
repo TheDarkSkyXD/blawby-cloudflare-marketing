@@ -1,0 +1,15 @@
+name = "blawby-marketing-backend"
+main = "src/workers/search.ts"
+compatibility_date = "2026-04-29"
+compatibility_flags = ["nodejs_compat"]
+
+[ai]
+binding = "AI"
+
+[vars]
+AI_SEARCH_NAME = "blawby-autorag-instance"
+
+[[d1_databases]]
+binding = "SUPPORT_DB"
+database_name = "support"
+database_id = "e2d54e53-bad8-4927-9ed7-d401d5488c6a"

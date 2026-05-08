@@ -71,7 +71,7 @@ jobs:
             --branch=master
 
       - name: Deploy Worker
-        run: pnpm exec wrangler deploy
+        run: pnpm exec wrangler deploy --config wrangler.worker.toml
 
       - name: Lighthouse CI (production)
         uses: treosh/lighthouse-ci-action@v12
