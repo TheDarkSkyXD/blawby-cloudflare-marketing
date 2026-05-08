@@ -66,6 +66,17 @@ export type Frontmatter = {
    * Surfaced in the UI; CI can flag docs older than 90 days.
    */
   lastVerified?: string;
+
+  // Hierarchy Metadata
+  /**
+   * Optional sub-group label within the doc's category. Items sharing the
+   * same `group` value collapse under a single sidebar header (e.g. "Intake",
+   * "Matters", "Engagements"). Drives the breadcrumb's middle segment too.
+   * Leave unset for flat categories (Quick Start, Reference).
+   */
+  group?: string;
+  /** Optional ordering for the sub-group itself within its category. */
+  groupOrder?: number;
 };
 
 // ─── Parser ───────────────────────────────────────────────────────────────────
