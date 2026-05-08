@@ -1,6 +1,6 @@
 ---
-title: "Send an Engagement and Collect Payment"
-desc: "How to send an engagement letter through Blawby, get client acceptance, and collect your first payment for the matter."
+title: "Send an Engagement and Collect Payment in Blawby"
+desc: "Send a structured engagement letter from a matter, get client acceptance, and collect the retainer or initial fee — all in the same thread."
 image: "/og-images/default.png"
 alt: "Send engagement and collect payment in Blawby"
 author: "Paul Chris Luke"
@@ -9,73 +9,130 @@ category: "features"
 contentType: "guide"
 order: 40
 createdAt: "04/30/2026"
-updatedAt: "04/30/2026"
+updatedAt: "05/07/2026"
+lastVerified: "05/07/2026"
 tags:
   - Engagement
   - Payment
   - Retainer
-  - Billing
+  - Stripe
 keywords:
-  - Send engagement letter
-  - Collect retainer
-  - Client accepts engagement
-  - Law firm engagement workflow
-summary: "Send engagement terms, collect client acceptance, and request payment in Blawby."
+  - Send engagement letter Blawby
+  - Collect retainer Blawby
+  - Engagement plus payment law firm
+  - Stripe payment in chat
+summary: "Send the structured engagement, get acceptance, and collect the retainer or initial fee in one flow."
 faq:
-  - Question: "What is an engagement in Blawby?"
-    answer: "It is the agreement step that confirms representation terms before work begins."
-  - Question: "Can we collect consultation or retainer payment right after acceptance?"
-    answer: "Yes. After engagement acceptance, your payment request flow can proceed for consultation fees, flat fees, or retainers."
-  - Question: "How does IOLTA handling fit here?"
-    answer: "Blawby routes billing and payouts through the trust/operating framework configured in your account."
+  - question: "What's in a Blawby engagement letter?"
+    answer: "Four sections: representation (scope, jurisdictions, parties), fees (billing type, rates, retainer amount), risk review (conflict and jurisdiction status), and acknowledgments (legal language). Pre-filled from intake and matter context, edited by you, signed by the client."
+  - question: "Can the client pay the retainer right after signing?"
+    answer: "Yes. After the client signs, they're redirected to a Stripe-hosted payment for any retainer or initial fee defined on the engagement."
+  - question: "Where do those funds land?"
+    answer: "Per your trust-routing configuration. If trust routing is set up, retainer dollars go to your trust account in full; processing fees are charged separately to your operating-account card."
 schemaType: "HowTo"
 noindex: false
 ---
 
 # Send an Engagement and Collect Payment
 
-This step turns a promising intake into an active client relationship. Clear engagement terms and timely payment collection reduce misunderstandings and help you start work faster.
+This is the moment a qualified intake becomes a paying matter. Blawby treats the engagement as a **structured object** — four sections you edit, not a free-text PDF you re-create from scratch every time. After the client signs, payment collection is built into the same flow.
 
-## What Engagement Means in Blawby
+For the deeper engagement model (the four sections, the lifecycle, conflict and jurisdiction status, immutability, amendments), see [Engagements Overview](/features/engagements-overview). This page is the operational version: how you send one, what the client experiences, and how payment lands.
 
-In this workflow, engagement is the formal agreement step between your firm and the potential client. It confirms representation terms before ongoing matter work begins.
+## What you'll edit before sending
 
-## Send Engagement from the Conversation Workflow
+When you click **Create engagement** from a matter, Blawby pre-fills the four sections from the intake answers, the matter context, and your firm defaults. You review and edit:
 
-After intake acceptance and initial chat:
+- **Representation** — scope summary, included/excluded services, parties, jurisdiction notes.
+- **Fees** — billing type (flat / hourly / retainer / contingency), rates, retainer amount, payment frequency, fee notes.
+- **Risk review** — conflict status, jurisdiction status, risk notes, open questions.
+- **Acknowledgments** — your firm's standard legal language (configured once in practice settings).
 
-1. Open the client conversation in Blawby.
-2. Start the engagement step from that workflow.
-3. Send the engagement letter/agreement to the client for review.
+Pay particular attention to:
 
-Keep your message clear: what they are agreeing to, what happens after acceptance, and what payment is required next.
+- The scope's **excluded services** — most scope-creep disputes start with something the engagement didn't explicitly call out as excluded.
+- The **fees section** — the billing type set here flows automatically to the matter once the engagement is accepted.
+- **Risk review** — if conflict or jurisdiction status is unclear, hold the engagement in Draft until it is.
 
-## What the Client Receives
+<DocPlaceholder
+  kind="screenshot"
+  src="/docs/engagements/draft-editor.png"
+  description="Engagement draft editor with the four sections expanded — representation, fees, risk review, acknowledgments."
+/>
 
-The client receives the engagement request in their Blawby flow, reviews the terms, and accepts to proceed.
+## Send
 
-## Collect Payment After Acceptance
+When the four sections look right, click **Send**.
 
-After acceptance, request the appropriate payment type for your matter setup:
+What happens:
 
-- Consultation fee
-- Flat fee
-- Retainer
+- The engagement status moves from **Draft** to **Sent**.
+- The client receives an email and (if subscribed) a push notification with a link to the review page.
+- The notification points at a clean, branded review surface — no Blawby login required.
 
-This keeps engagement and payment connected so your team can see progress clearly.
+## What the client experiences
 
-## Where Funds Route (Operating vs Trust)
+The client opens the engagement on `ClientEngagementReviewPage`:
 
-Payment routing follows your Blawby payment and IOLTA configuration. This is why account setup and trust rules should be finalized before live client work.
+1. They read the **client summary** at the top — matter, location, goals, parties.
+2. They scroll through representation, fees, risk acknowledgments, and the legal language.
+3. If they have questions, they reply in the chat thread (their messages route back to the matter).
+4. They sign with a typed signature; the signature, IP address, and timestamp are recorded.
+5. **On acceptance**, they're redirected to pay any retainer or initial fee defined in the Fees section.
 
-If you handle unearned client funds, ensure trust routing is configured before collecting those amounts.
+<DocPlaceholder
+  kind="video"
+  src="/docs/engagements/client-acceptance.mp4"
+  description="Client opens the engagement, reviews the four sections, signs, and is redirected to Stripe for retainer payment."
+/>
 
-## What Happens After Payment
+## Payment after acceptance
 
-Once engagement is accepted and payment is completed, the client moves into active matter management in Blawby.
+Whatever you put in the **Fees** section — retainer amount, flat fee, contingency cost-deposit — becomes the immediate payment ask after the client signs.
 
-## Next Step
+The Stripe-hosted payment surface accepts:
 
-Now manage the active case from the Matters tab, including billing, time, team access, files, and ongoing updates.
+- **Card** — instant.
+- **ACH** — settles in a few business days; the matter activates on settlement.
 
-[Manage Matters](/features/manage-matters)
+Routing follows your practice's trust-routing configuration:
+
+- **Trust-routed engagements** (most retainers): the gross amount lands in your trust account; Blawby never deducts fees from those dollars. Processing fees are charged separately to your operating-account card.
+- **Operating-routed engagements** (flat fees that aren't trust-eligible, contingency cost deposits where local rules permit): the amount lands in your operating account net of Stripe's standard processing.
+
+[Read the IOLTA Compliance Guide](/compliance/iolta-compliance) for more on how this fee model keeps trust dollars whole.
+
+## What changes once payment clears
+
+- The matter status moves to **active**.
+- The billing type set on the engagement is applied to the matter automatically.
+- The retainer balance (for retainer matters) shows on the matter's Billing tab.
+- Time logged from this point can roll into invoices that draw from the retainer balance.
+- Notifications fire to your team via in-app, email, and push.
+
+## If the client declines
+
+The engagement status moves to **Declined**. The matter doesn't activate. Your options:
+
+- **Edit and resend** — adjust scope or fees, send a new version. The original Declined record is preserved in the matter's audit trail.
+- **Close the matter** — if the decline is final.
+
+## Common scenarios
+
+**Scope expansion mid-matter.**
+Don't edit the existing engagement (it's immutable once accepted). Create a **new engagement** that references the prior one. The client signs the amendment the same way.
+
+**Retainer paid by ACH and settlement is pending.**
+The matter waits to activate until Stripe confirms settlement (a few business days). Status during that window: engagement Accepted, payment Pending, matter Pending Activation.
+
+**Contingency engagement with no upfront payment.**
+Skip the retainer field. The engagement still gets signed; payment collection happens at settlement.
+
+**Joint engagement with co-clients.**
+Each co-client signs separately. The engagement activates only when all required signatures are in.
+
+## Next: manage the active matter
+
+Once the engagement is accepted and any initial payment clears, the matter is active. All billable work, files, and communication live there.
+
+[Continue to Matters Overview](/features/matters-overview)

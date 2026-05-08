@@ -217,6 +217,20 @@ export default async function Page({
           <div id="content" className="prose">
             <Content />
           </div>
+          {content.lastVerified && (
+            <p className="mt-10 border-t border-gray-200 pt-4 text-xs text-gray-500 dark:border-white/10 dark:text-gray-400">
+              Last verified against the live product on{" "}
+              <time dateTime={content.lastVerified}>
+                {new Date(content.lastVerified).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  timeZone: "UTC",
+                })}
+              </time>
+              .
+            </p>
+          )}
         </div>
         <div className="hidden w-66 lg:block">
           <TableOfContents contentId="content" />

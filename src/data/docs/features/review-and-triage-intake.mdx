@@ -1,6 +1,6 @@
 ---
-title: "Review and Triage Client Intakes"
-desc: "Learn how to review incoming intake submissions in Blawby and decide to accept, deny, or request more information."
+title: "Review and Triage Intakes — Accept, Decline, Ask AI"
+desc: "Triage intake submissions in Blawby's queue: read the AI summary, accept to create a matter, decline cleanly, or send the AI back for more info."
 image: "/og-images/default.png"
 alt: "Review and triage client intakes in Blawby"
 author: "Paul Chris Luke"
@@ -9,89 +9,134 @@ category: "features"
 contentType: "guide"
 order: 20
 createdAt: "04/30/2026"
-updatedAt: "04/30/2026"
+updatedAt: "05/07/2026"
+lastVerified: "05/07/2026"
 tags:
   - Intake
   - Triage
-  - Client-Review
+  - Queue
 keywords:
   - Review client intake
-  - Accept intake blawby
-  - Deny intake blawby
-  - Request more intake information
-summary: "Review new intake submissions and decide whether to accept, deny, or request more details in Blawby."
+  - Accept intake Blawby
+  - Decline intake Blawby
+  - Ask AI gather more information
+summary: "Triage new intake submissions from the IntakesPage queue and decide accept, decline, or ask AI for more info."
 faq:
-  - Question: "How quickly should we triage a new intake?"
-    answer: "Aim to review new submissions the same day whenever possible, so potential clients are not left waiting."
-  - Question: "Should we deny an intake immediately if information is missing?"
-    answer: "Usually no. If the matter seems potentially viable, request more details first so you can make a better decision."
-  - Question: "Can support staff handle triage before an attorney reviews it?"
-    answer: "Yes. Many firms use a paralegal or intake coordinator to do first-pass triage before attorney review."
+  - question: "How quickly should we triage a new intake?"
+    answer: "Same day. The first response time is the strongest predictor of conversion in legal intake."
+  - question: "Should we decline an intake immediately if information is missing?"
+    answer: "Usually no. If the matter looks viable, use 'Ask AI to gather more info' before declining. The widget continues the conversation and returns the intake to your queue with the missing facts filled in."
+  - question: "Can support staff handle triage before an attorney reviews it?"
+    answer: "Yes. Many firms have a paralegal or intake coordinator do first-pass triage; attorneys see only the ones that pass the initial filter."
 schemaType: "HowTo"
 noindex: false
 ---
 
 # Review and Triage Client Intakes
 
-Fast, consistent intake triage helps you protect attorney time and respond to serious matters quickly. In Blawby, triage is the decision point between a new submission and a real client conversation.
+Every new submission lands in your **Intakes** queue. Triage is the moment a submission becomes a matter — or doesn't.
 
-## Why Triage Matters
+This page walks through what you see in the queue, what to read on each submission, and the three actions available.
 
-Every new intake is a time decision. A good triage process helps your firm:
+<DocPlaceholder
+  kind="screenshot"
+  src="/docs/intake/queue.png"
+  description="IntakesPage queue with several submissions, urgency badges, and the New filter active."
+/>
 
-- Respond quickly to strong leads
-- Decline poor-fit matters professionally
-- Request missing details before committing attorney time
+## The queue
 
-## Where New Intakes Appear
+Open **Intakes** from your dashboard. The queue shows every recent submission with:
 
-In your Blawby dashboard, new submissions appear in your intake review area/queue for your team to process. Open the submission to view the details before taking action.
+- **Client name and contact**.
+- **Matter type** — what your template's matter-type field captured.
+- **Urgency badge** — low / medium / high (color-coded).
+- **AI-generated case summary** — a short title plus a one-paragraph gist.
+- **Submitted at** — relative time so you can spot stale items.
+- **Status pill** — New / In review / Accepted / Declined / Awaiting info.
 
-## What to Review Before You Decide
+Filter by status, search by name, sort by urgency. New + high-urgency submissions sit at the top by default.
 
-For each intake, review the core details submitted through the chat intake form, including:
+## What to read on a submission
 
-- Contact information
-- Matter type and short case summary
-- Timing/urgency context
-- Any additional information captured by your intake form
+Open a submission to see the detail view (`IntakeDetailPage`). Read in this order:
 
-If details are incomplete but the matter may be a fit, request more information instead of denying immediately.
+1. **Case summary** — the AI's short-form description. Sets context fast.
+2. **Urgency** — high-urgency matters often have hard deadlines (statute of limitations, court dates) and warrant a same-hour response.
+3. **Jurisdiction / location** — confirm you're admitted there. If not, your decision is "decline with referral note."
+4. **Contact** — name, email, phone.
+5. **Custom field answers** — anything your template asked beyond the standard fields.
+6. **Documents** — files the client uploaded (police reports, contracts, photos). Open inline.
+7. **Payment status** — if your template has a consultation fee, confirm it's marked paid before accepting.
 
-## Action 1: Accept the Intake
+<DocPlaceholder
+  kind="screenshot"
+  src="/docs/intake/detail-page-annotated.png"
+  description="IntakeDetailPage with the case summary, urgency badge, custom fields, and decision buttons annotated."
+/>
 
-Use **Accept** when the submission matches your practice and is ready for attorney follow-up.
+## Action 1 — Accept
 
-What happens next:
+Use **Accept** when the matter fits your practice and you have enough to take the next step.
 
-- The intake moves forward in your workflow
-- The conversation becomes available for direct lawyer/client communication
-- Your team can proceed with consultation and engagement steps
+What happens automatically:
 
-## Action 2: Deny the Intake
+- A **matter** is created with the contact info, case summary, urgency, and uploaded files carried forward.
+- The **conversation** thread becomes available for direct attorney/client communication.
+- The **client** is notified that their intake was accepted.
+- Your team receives an in-app and email/push notification (per your Notifications policy).
 
-Use **Deny** when the matter is outside scope, conflicts with your intake criteria, or is not a fit.
+Then move directly into the conversation — see [Join a Client Conversation](/features/join-client-conversation).
 
-What to keep in mind:
+## Action 2 — Decline
 
-- Use clear internal notes so your team understands why
-- Keep client-facing communication professional and brief when your workflow includes a decline response
+Use **Decline** when the matter is outside your scope, conflicts with another client, or isn't a fit for any other reason.
 
-## Action 3: Ask Blawby AI to Gather More Information
+What happens automatically:
 
-Use this when the intake is promising but incomplete.
+- The submission is closed and removed from the active queue.
+- The client is sent a clean, professional decline message (template-configurable in **Settings → Intake templates**).
+- An internal note can be added, visible only to your team.
 
-In this flow, Blawby AI continues the intake conversation with the potential client to collect missing details you need for a decision (for example: timeline, facts, or case context). Once the additional information is collected, the intake returns to your review queue for a final accept/deny decision.
+Best practice: keep client-facing decline messages brief. Save the reasoning for your internal note — that's where future referrals or conflict checks will look.
 
-## Practical Triage Standards
+## Action 3 — Ask AI to gather more info
 
-- Review new intakes at least once daily
-- Prioritize time-sensitive submissions first
-- Use consistent accept/deny criteria across staff
-- Prefer “request more info” when one key detail is missing
+Use this when the matter looks promising but is missing one or two facts you'd need to decide.
 
-## Next Step
+What happens:
 
-Once you accept an intake, move immediately into direct client communication.
+- The widget conversation reopens for the client.
+- The AI asks the specific follow-up questions you specified (or the standard enrichment-phase questions if you don't specify).
+- Once the client answers, the intake returns to your queue with status **Awaiting info → New**.
+- You triage again with the new context.
 
-[Join a Client Conversation](/features/join-client-conversation)
+This is the highest-converting third option — much better than declining a thin lead. Common follow-ups: court dates, opposing party, prior counsel, document availability, jurisdiction confirmation.
+
+## Practical triage standards
+
+- **Review new intakes at least daily** — same morning is better.
+- **Prioritize high-urgency first**, regardless of submitted-at order.
+- **Use consistent accept/decline criteria** across attorney and staff (write them down — see day-one checklist).
+- **Default to "ask AI for more info"** when one key detail is missing rather than declining outright.
+- **Decline cleanly** — short, professional, no legal advice in the message.
+
+## Edge cases
+
+**Two intakes from the same client.**
+Common when a client doesn't see the confirmation. Accept the more complete one; decline the duplicate with an internal note linking them.
+
+**Intake from a jurisdiction you don't cover.**
+Decline with a referral note in your internal record. If you have a partner firm, share the referral path in a personal email — don't put referral promises in the auto-decline template.
+
+**Intake with a paid consultation fee that you have to decline.**
+Decline, then refund the consultation fee from the linked invoice. The refund processes through Stripe and notifies the client.
+
+**Possible conflict.**
+Decline with conflict status noted. Make sure your template's standard decline language doesn't claim or deny representation of opposing parties.
+
+## Next: join the client conversation
+
+When you accept, the next step is a fast, clear first message in the conversation thread.
+
+[Continue to Join a Client Conversation](/features/join-client-conversation)

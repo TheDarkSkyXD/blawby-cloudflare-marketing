@@ -1,6 +1,6 @@
 ---
-title: "Join a Client Conversation"
-desc: "After accepting an intake, here's how to join the live chat conversation with your potential client in Blawby."
+title: "Join a Client Conversation — Chat, Files, AI Assist"
+desc: "After accepting an intake, work the live conversation thread in Blawby — text, file uploads, quick-reply buttons, payment cards, and paralegal AI assistance."
 image: "/og-images/default.png"
 alt: "Join a client conversation in Blawby"
 author: "Paul Chris Luke"
@@ -9,76 +9,136 @@ category: "features"
 contentType: "guide"
 order: 30
 createdAt: "04/30/2026"
-updatedAt: "04/30/2026"
+updatedAt: "05/07/2026"
+lastVerified: "05/07/2026"
 tags:
   - Conversation
   - Chat
-  - Client-Communication
+  - File-Sharing
+  - Paralegal-AI
 keywords:
-  - Join client chat
-  - Blawby conversation
-  - Client messaging
-  - Lawyer client chat
-summary: "Learn how to join and manage client conversations in Blawby after intake acceptance."
+  - Join client chat Blawby
+  - Live chat law firm
+  - Lawyer client conversation
+  - Paralegal AI chat
+summary: "Work the live conversation thread after intake acceptance — messages, files, quick replies, payment cards, and AI document analysis."
 faq:
-  - Question: "When can I join the conversation?"
-    answer: "After the intake is accepted, the conversation becomes available to your team in Blawby chat."
-  - Question: "Can I include a paralegal in the conversation?"
-    answer: "Yes. Add the appropriate team members as assignees so the right people can support communication."
-  - Question: "Can clients send files in chat?"
-    answer: "Clients can share supporting information and files through the matter workflow where file sharing is enabled."
+  - question: "When does the conversation become available?"
+    answer: "As soon as you accept the intake. The thread is created automatically with the intake context and available to your assigned team."
+  - question: "Can I share files with the client?"
+    answer: "Yes, in both directions. The widget supports uploads up to 25 MB per file (images, video, audio, PDF, Word). Files appear as attachment cards in the thread."
+  - question: "What's the AI doing during the conversation?"
+    answer: "The conversation runs in CONVERSATION mode by default — it's a two-way chat where the AI assists rather than drives. The AI can also stream paralegal-style document analysis when the client uploads files."
 schemaType: "HowTo"
 noindex: false
 ---
 
 # Join a Client Conversation
 
-After intake acceptance, speed and clarity matter. Reaching out quickly in chat helps the client feel supported and helps your team move the matter forward without email back-and-forth.
+After you accept an intake, the conversation thread opens for your team. This is where the actual lawyer/client back-and-forth happens — confirmations, file requests, scheduling, payment requests, and the prep work that leads to an engagement.
 
-## What Makes the Conversation Available
+This page covers what's in the chat surface, what the AI is and isn't doing, and the rhythm that converts an accepted intake into a signed engagement.
 
-A conversation is available for your team once the intake is accepted in Blawby.
+<DocPlaceholder
+  kind="video"
+  src="/docs/chat/conversation-walkthrough.mp4"
+  description="60-second walkthrough of an active conversation — sending a message, attaching a file, the AI surfacing a quick-reply suggestion, and paralegal analysis streaming in."
+/>
 
-## Where to Find Conversations
+## How the chat works
 
-Open your Blawby dashboard and go to your conversation/chat area. Locate the accepted intake conversation and open the thread.
+Blawby chat runs in different **modes** depending on context. After intake acceptance, the conversation is in **CONVERSATION** mode — a two-way thread where you (the firm) drive and the AI assists. Earlier modes:
 
-## Send Your First Message
+| Mode | When |
+|---|---|
+| `REQUEST_CONSULTATION` | The original intake conversation — AI walks the client through your template. |
+| `ASK_QUESTION` | A lightweight question the client asked outside intake. |
+| `PRACTICE_ONBOARDING` | The setup conversation when you first signed up. |
+| `CONVERSATION` | What you're working in now — post-acceptance, attorney-led, AI-assisted. |
 
-Your first message should do three things:
+You don't pick the mode manually; the platform routes the first message. After acceptance, conversation mode is the default.
 
-1. Confirm you reviewed their intake
-2. Set expectations for next steps
-3. Tell them what you need next (if anything)
+## What's in the message stream
 
-A simple opening works well:
+A conversation thread renders several message types inline:
 
-"Thanks for submitting your intake. We reviewed your details and can move forward. Next, we'll walk you through engagement and payment so we can begin work."
+- **Text** — your messages and the client's, with markdown rendering, code blocks, and inline formatting.
+- **Files** — attachment cards. 25 MB per file (images, video, audio, PDF, Word). Camera capture works on mobile.
+- **Quick-reply buttons** — the AI suggests next-step actions extracted from your message ("Schedule consult," "Request retainer," "Open payment link").
+- **Payment cards** — when you send a payment request, a Stripe Elements card renders inline. The client pays without leaving the thread.
+- **Engagement proposal** — once you send an engagement, the proposal renders for the client to review and sign in-thread.
+- **Paralegal analysis** — when the client uploads a document, the AI streams "📄 Analyzing…" status, then surfaces extracted facts (parties, dates, amounts, deadlines, risks).
 
-## What the Client Sees
+## Send your first message after acceptance
 
-On the client side, they see the same conversation thread and can respond in real time. This keeps communication in one place instead of splitting updates across phone, email, and text.
+Three things to do in the first message:
 
-## Requesting Files and Additional Information
+1. **Confirm you reviewed the intake.** Reduces client anxiety.
+2. **Set expectations for next steps.** "Within 24 hours we'll send a short engagement letter" beats "we'll be in touch."
+3. **Tell them what you need next**, if anything (one ID document, a contract scan, a court date confirmation).
 
-When needed, use the conversation to request supporting details and direct the client to upload documents through the Blawby matter workflow once available.
+A simple opener that works:
 
-Keep requests specific:
+> Thanks for the details. I've reviewed your intake and we can move forward. Next up: I'll send a short engagement letter outlining scope and fees. Please reply here if you have a contract or notice you'd like me to review before that goes out.
 
-- What you need
-- Why you need it
-- By when it helps to receive it
+Keep it tight. The longer your first message, the longer the gap before they respond.
 
-## Involving Team Members
+## Requesting files
 
-Add the right internal assignees so communication does not depend on one person. Typical model:
+Two paths:
 
-- Attorney owns legal direction
-- Paralegal supports follow-up and document collection
-- Billing/admin supports payment steps
+- **Ask in chat.** "Could you upload the police report?" — the client sees a clear inline request and uploads in the same thread.
+- **Standard intake enrichment fields.** If documents are something you ask for on most matters, add them as enrichment fields on your intake template so they're collected automatically.
 
-## Next Step
+Always say **what** you need, **why**, and **by when**:
 
-Once the client conversation is active, send engagement terms and move to payment.
+> I need the contract you signed in March. It tells me which clauses apply to your termination notice. If you can upload it by Friday, that lets me have the engagement letter to you by Monday.
 
-[Send an Engagement and Collect Payment](/features/send-engagement-and-collect-payment)
+## When the AI does paralegal analysis
+
+When the client uploads a file, the paralegal AI may automatically stream analysis in chat — extracted parties, dates, deadlines, dollar amounts, and identified risks. The status updates ("📄 Analyzing… 📅 Found 2 deadlines… ⚠️ Flagged 1 risk…") show up live as the analysis runs.
+
+This is meant for **first-pass review** — a fast read on what's in the document. It's not a substitute for your own review, but it puts the right starting questions in front of you faster than reading from page one.
+
+<DocPlaceholder
+  kind="screenshot"
+  src="/docs/chat/paralegal-analysis-stream.png"
+  description="Paralegal AI streaming analysis in the conversation thread — file uploaded, status messages, extracted facts inline."
+/>
+
+## Involving team members
+
+Add team assignees on the matter (see **Settings tab** in the matter detail) so communication doesn't depend on one person:
+
+- **Attorney** — legal direction, engagement decisions, settlement-level calls.
+- **Paralegal** — document collection, scheduling, follow-ups.
+- **Billing/admin** — invoices, payment requests, retainer top-ups.
+
+All assignees see the conversation; their actions log to the matter's Activity tab.
+
+## What the client sees
+
+The client sees the same thread you do, minus internal-only items:
+
+- Internal notes on the matter (Notes tab) are hidden from them.
+- Internal-only Activity log entries (e.g., "team member added") are hidden.
+- Quick-reply buttons render slightly differently — more prominent on the client side.
+
+If they reply on a different device, the conversation continues seamlessly. Better Auth sessions follow them across devices.
+
+## Practical patterns
+
+**Schedule the consult in chat.**
+A two-message pattern works: "Here are three slots: Tue 2pm, Wed 10am, Thu 4pm. Reply with what works." Replace with a calendar link if you have one.
+
+**Send a payment request the same day you accept.**
+Inline payment cards convert faster than emailed invoices. For consultation fees, the card lands directly in the thread.
+
+**Trigger the engagement letter as soon as scope is clear.**
+Don't make the client chase the engagement. Send it the same day or the next morning while interest is high.
+
+## Next: send the engagement letter and collect payment
+
+Once you have what you need, send the engagement and move the matter to active.
+
+[Continue to Send an Engagement and Collect Payment](/features/send-engagement-and-collect-payment)

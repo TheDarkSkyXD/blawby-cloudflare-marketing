@@ -1,7 +1,6 @@
 ---
-title: "Blawby API Reference | Technical Documentation"
-metaTitle: "API Reference — Blawby"
-desc: "Explore the Blawby API reference for technical specs on payments and intake. Secure integration for legal tech."
+title: "Blawby Developer Reference"
+desc: "What ships today for developers integrating with Blawby — embeddable widget, payment links, notifications — plus the public API and webhook roadmap."
 image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public"
 author: "Paul Chris Luke"
 authorImage: "/images/logo.png"
@@ -9,403 +8,137 @@ category: "reference"
 contentType: "reference"
 order: 10
 createdAt: "02/15/2024"
-updatedAt: "02/15/2024"
+updatedAt: "05/07/2026"
+lastVerified: "05/07/2026"
 tags:
-  - Api
-  - Webhooks
-  - Authentication
-  - Endpoints
-  - Sdk
+  - Developer
   - Integration
-keywords:
-  - Blawby api
-  - Blawby api documentation
+  - Widget
   - Webhooks
-  - Authentication
-  - Endpoints reference
-  - Developer integration guide
-  - Sdk reference
-summary: "Complete reference documentation for Blawby API endpoints, authentication, webhooks, and SDK usage. Technical specifications for developers."
+keywords:
+  - Blawby developer reference
+  - Blawby widget integration
+  - Legal intake widget embed
+  - Blawby webhooks
+  - Blawby public API
+summary: "Practical reference for the integration surfaces Blawby exposes today, plus a roadmap for the public API."
 schemaType: "TechArticle"
 faq:
-  - question: "What authentication methods does Blawby support?"
-    answer: "Blawby supports API key authentication, OAuth 2.0, and session-based authentication for different integration scenarios."
-  - question: "How do I handle API rate limits?"
-    answer: "Implement exponential backoff with jitter, monitor response headers for rate limit indicators, and provide user-friendly error messages."
-  - question: "What are the best practices for webhook security?"
-    answer: "Always verify webhook signatures using HMAC-SHA256, store secrets securely, use HTTPS endpoints, and implement idempotency keys for reliable event processing."
+  - question: "Does Blawby have a public REST API?"
+    answer: "Not yet. The platform exposes a publicly embeddable chat widget today and is working toward a documented public API. Integrations that need programmatic access can join the early-access list."
+  - question: "How do I install the chat widget on my website?"
+    answer: "Copy the embed snippet from your dashboard's widget settings. It loads the Blawby intake widget on any page where the script is included."
+  - question: "Are there webhooks I can subscribe to?"
+    answer: "Server-to-server webhooks are part of the public API roadmap. Today, Blawby pushes notifications to your team via in-app, email, and OneSignal push channels."
 noindex: false
 ---
 
-# Blawby API Reference
+# Blawby Developer Reference
 
-Complete technical documentation for integrating with the Blawby platform. This reference covers all available endpoints, authentication methods, webhook events, and best practices for secure API development.
+This page is the honest map of what's available to developers integrating with Blawby today, and what's on the roadmap.
 
-> This page is for developers integrating with Blawby's API.
-> If you're a lawyer or legal staff, you don't need this -
-> [start here instead](/guides/get-started).
+> **About this page** — Blawby's product is a hosted application for law firms. The integration surfaces below are what's stable enough to build against right now. The full public REST API is still being designed; sign up for early access at the bottom of this page if you need it.
 
-## Authentication
+## What's available today
 
-### API Key Authentication
+### 1. Embeddable chat widget
 
-The most straightforward method for server-to-server communication.
+The chat widget is the primary integration surface. Drop a script tag on your law firm's website and the widget renders the live intake experience: AI-guided conversation, file uploads, optional consultation fee collection, and submission into your firm's queue.
 
-#### Endpoint
+See [Install the Chat Widget](/ai-chat/install-chat-widget) for setup.
 
-```
-POST /api/v1/authenticate
-```
+What the widget supports:
 
-#### Request Body
+- AI-guided intake in **18 languages** with full RTL for Arabic.
+- File attachments up to **25 MB** per file (images, video, audio, PDF, Word docs).
+- Optional **consultation fee** collection via Stripe before submission.
+- **Conditional intake fields** (the AI only asks follow-up questions when a parent answer matches).
+- **Cross-origin cookie handling** — the widget is designed to work when embedded on your firm's domain, not Blawby's.
 
-```json
-{
-  "apiKey": "your-api-key",
-  "practiceId": "your-practice-id"
-}
-```
+### 2. Pre-filled payment links
 
-#### Response
-
-```json
-{
-  "token": "jwt_token_here",
-  "expiresIn": 3600,
-  "practiceId": "your-practice-id",
-  "permissions": ["read", "write", "admin"]
-}
-```
-
-### Session-Based Authentication
-
-For client applications that maintain user sessions.
-
-#### Endpoint
+Generate a payment link in the dashboard, then customize the amount per request via a URL parameter. This works in email, SMS, intake email replies — anywhere a link works.
 
 ```
-POST /api/v1/auth/session
+https://blawby.com/your-firm-slug?amount=12500
 ```
 
-#### Request Body
+The `amount` parameter is in cents. `12500` = $125.00. See [Accepting Payments](/payments/accepting-payments) for the full link reference.
 
-```json
-{
-  "token": "jwt_token_here",
-  "practiceId": "your-practice-id"
-}
-```
+### 3. Notification channels
 
-#### Response
+When something happens in your firm (intake submitted, invoice paid, engagement signed, matter status changed) Blawby fans out notifications across:
 
-```json
-{
-  "sessionId": "session_abc123",
-  "expiresIn": 1800,
-  "user": {
-    "id": "user_456",
-    "email": "user@example.com",
-    "name": "John Doe"
-  }
-}
-```
+- **In-app** — bell icon in the dashboard.
+- **Email** — transactional, branded with your firm.
+- **Push** — via OneSignal SDK on the web client.
 
-## Core API Endpoints
+You don't subscribe to these as a developer today; they're delivered to your team's accounts. Server-to-server webhook delivery is on the roadmap (see below).
 
-### Client Management
+### 4. Paralegal document analysis (in-product)
 
-#### Get Client
+When clients upload documents into chat, an AI paralegal streams analysis status messages and surfaces extracted facts, deadlines, and risks. This is currently surfaced inside the Blawby app — the underlying analysis WebSocket is **not yet a public integration point**.
 
-```
-GET /api/v1/clients/{id}
-```
+## What's on the roadmap
 
-#### Response
+These are the integration capabilities being designed but not yet released for public use:
 
-```json
-{
-  "id": "client_456",
-  "name": "John Doe",
-  "email": "john@example.com",
-  "phone": "+1-555-0123",
-  "status": "active",
-  "createdAt": "2024-01-15T00:00:00Z",
-  "updatedAt": "2024-01-20T10:30:00Z"
-}
-```
+- **Public REST API** — programmatic CRUD for matters, invoices, contacts, intakes, and time entries.
+- **Webhooks** — subscribe to events like `intake.submitted`, `intake.accepted`, `engagement.signed`, `invoice.paid`, `payout.created`. HMAC-signed, with idempotency keys.
+- **OAuth 2.0 for third-party apps** — let other tools connect to a Blawby practice on behalf of a user.
+- **SDK packages** — `@blawby/sdk` for JS/TS and a Python equivalent. None are published today.
+- **Granular role-based API tokens** — scoped tokens (e.g., `intake.read`, `invoices.write`) for service integrations.
 
-#### Create Client
+<DocPlaceholder
+  kind="diagram"
+  src="/docs/reference/api-surface-diagram.svg"
+  description="Future API surface — embeddable widget on the left, public REST API in the middle, your service on the right."
+/>
 
-```
-POST /api/v1/clients
-```
+## Authentication today
 
-#### Request Body
+End-user authentication is handled by Blawby's hosted Better Auth deployment. Sessions are issued as cookies and validated server-side; there is **no public API key issuance yet**.
 
-```json
-{
-  "name": "Jane Smith",
-  "email": "jane@example.com",
-  "phone": "+1-555-0124",
-  "status": "active"
-}
-```
+If you need session-aware behavior in your own service while we work toward an API:
 
-#### Response
+- Mount the chat widget on a page your authenticated user is already on.
+- Pass a stable practice slug or organization identifier in the embed snippet so the widget routes to the right firm.
+- Treat any data the widget posts back to *your* domain (e.g., a thank-you page) as untrusted user input — Blawby is the source of truth.
 
-```json
-{
-  "id": "client_457",
-  "name": "Jane Smith",
-  "email": "jane@example.com",
-  "phone": "+1-555-0124",
-  "status": "active",
-  "createdAt": "2024-01-15T14:20:00Z",
-  "updatedAt": "2024-01-15T14:20:00Z"
-}
-```
+## Security expectations for the future API
 
-#### Update Client
+When the public API ships, integrations should plan for these baseline behaviors. Building against these expectations now will save migration work later:
 
-```
-PUT /api/v1/clients/{id}
-```
+- **HTTPS only.** No plaintext.
+- **Webhook verification** with HMAC-SHA256 over the raw request body. Compare with `crypto.timingSafeEqual` (Node) or constant-time equivalents.
+- **Idempotency keys** on any state-changing call so retries don't duplicate writes.
+- **Exponential backoff with jitter** on rate-limit responses.
+- **Never embed credentials in client-side code.** Calls must originate from a server you control.
 
-#### Request Body
-
-```json
-{
-  "name": "John Doe Updated",
-  "email": "john.updated@example.com",
-  "status": "active"
-}
-```
-
-### Payments
-
-#### Create Invoice
-
-```
-POST /api/v1/invoices
-```
-
-#### Request Body
-
-```json
-{
-  "clientId": "client_456",
-  "amount": 25000,
-  "currency": "USD",
-  "dueDate": "2024-02-15",
-  "description": "Legal consultation services"
-}
-```
-
-#### Response
-
-```json
-{
-  "id": "inv_123",
-  "status": "draft",
-  "createdAt": "2024-01-10T15:30:00Z"
-}
-```
-
-#### Process Payment
-
-```
-POST /api/v1/payments
-```
-
-#### Request Body
-
-```json
-{
-  "invoiceId": "inv_123",
-  "amount": 25000,
-  "paymentMethod": "card",
-  "currency": "USD"
-}
-```
-
-#### Response
-
-```json
-{
-  "id": "pay_456",
-  "status": "succeeded",
-  "createdAt": "2024-01-10T16:45:00Z"
-}
-```
-
-### Webhooks
-
-### Supported Events
-
-#### Payment Events
-
-- `payment.succeeded` - Payment completed successfully
-- `payment.failed` - Payment failed
-- `payment.requires_action` - Payment requires additional action
-
-#### Invoice Events
-
-- `invoice.sent` - Invoice sent to client
-- `invoice.paid` - Invoice marked as paid
-- `invoice.overdue` - Invoice is overdue
-
-#### Webhook Configuration
-
-#### Endpoint
-
-```
-POST /api/v1/webhooks
-```
-
-#### Request Headers
-
-```json
-{
-  "Content-Type": "application/json",
-  "x-blawby-signature": "computed_hmac_signature"
-}
-```
-
-#### Request Body
-
-```json
-{
-  "url": "https://your-domain.com/webhooks",
-  "events": ["payment.succeeded", "invoice.sent"],
-  "secret": "your_webhook_secret"
-}
-```
-
-#### Verification Process
-
-1. Extract signature from `x-blawby-signature` header
-2. Extract timestamp from `x-blawby-timestamp` header
-3. Extract event payload from request body
-4. Compute expected HMAC using your webhook secret
-5. Compare computed signature with received signature
+A representative HMAC verification — pattern only, the real signing scheme will be published with the API:
 
 ```javascript
-function verifyWebhookSignature(payload, signature, secret) {
-  const crypto = require("crypto");
-  const expectedSignature = crypto
+import crypto from "node:crypto";
+
+function verifyWebhookSignature(rawBody, signature, secret) {
+  const expected = crypto
     .createHmac("sha256", secret)
-    .update(JSON.stringify(payload), "utf8")
+    .update(rawBody, "utf8")
     .digest("hex");
-
-  return signature === expectedSignature;
+  return crypto.timingSafeEqual(
+    Buffer.from(expected, "hex"),
+    Buffer.from(signature, "hex"),
+  );
 }
 ```
 
-## SDK Integration
+## Get early access
 
-### JavaScript/TypeScript
+If your team needs the public API or webhooks now, [contact developer support](https://ai.blawby.com/contact). Priority is given to firms with a concrete integration use case (CRM sync, accounting, document management).
 
-```javascript
-import { BlawbyClient } from "@blawby/sdk";
+## Related guides
 
-const client = new BlawbyClient({
-  apiKey: process.env.BLAWBY_API_KEY,
-  practiceId: process.env.PRACTICE_ID,
-  baseUrl: "https://api.blawby.com",
-});
-```
-
-### Python
-
-```text
-import requests
-import hmac
-import hashlib
-import json
-
-class BlawbyClient:
-    def __init__(self, api_key, practice_id, base_url):
-        self.api_key = api_key
-        self.practice_id = practice_id
-        self.base_url = base_url
-        self.session = requests.Session()
-
-    def authenticate(self):
-        response = self.session.post(f"{self.base_url}/api/v1/authenticate", json={
-            "apiKey": self.api_key,
-            "practiceId": self.practice_id
-        })
-        return response.json()
-
-    def create_invoice(self, client_id, amount, description):
-        return self.session.post(f"{self.base_url}/api/v1/invoices", json={
-            "clientId": client_id,
-            "amount": amount,
-            "currency": "USD",
-            "description": description
-        })
-```
-
-## Rate Limits
-
-- **Authentication**: 100 requests per minute
-- **API Calls**: 1000 requests per minute per practice
-- **Webhooks**: 10 events per minute per webhook
-
-## Error Handling
-
-### Standard Response Format
-
-```json
-{
-  "error": {
-    "code": "RATE_LIMIT_EXCEEDED",
-    "message": "Rate limit exceeded. Please try again later.",
-    "details": {
-      "retryAfter": 60,
-      "limit": 1000,
-      "current": 950
-    }
-  }
-}
-```
-
-### HTTP Status Codes
-
-- `200` - Success
-- `400` - Bad Request
-- `401` - Unauthorized
-- `429` - Rate Limited
-- `500` - Server Error
-
-## Best Practices
-
-### Security
-
-- Never expose API keys in client-side code
-- Use HTTPS for all API calls
-- Validate all input data
-- Implement proper webhook signature verification
-- Use environment variables for sensitive configuration
-
-### Performance
-
-- Implement request queuing for rate limit handling
-- Use connection pooling for high-volume applications
-- Cache frequently accessed data
-- Monitor API response times and optimize accordingly
-
-## Testing
-
-### Test Environment
-
-- Use `https://api-staging.blawby.com` for development
-- Test webhook delivery using tools like ngrok or webhook.site
-- Validate all error scenarios and edge cases
-
-This reference documentation provides comprehensive technical specifications for secure and efficient Blawby API integration.
-
-
----
-
-Ready to integrate Blawby into your practice? [Contact our developer support team](https://ai.blawby.com/contact) to get started.
+- [Install the Chat Widget](/ai-chat/install-chat-widget) — embed instructions for builders and developers.
+- [Set Up Client Intake](/features/set-up-client-intake) — configure what the widget collects.
+- [Accepting Payments](/payments/accepting-payments) — pre-filled payment links and fee routing.
+- [IOLTA Compliance Guide](/compliance/iolta-compliance) — how Blawby separates trust and operating funds.

@@ -1,6 +1,6 @@
 ---
-title: "Create Your Practice Account"
-desc: "Create your Blawby practice account, verify firm details, and prepare your team for intake and payment setup."
+title: "Create Your Practice — Conversational Onboarding"
+desc: "Set up your Blawby practice through the AI-guided onboarding chat: name, slug, accent color, services, jurisdiction, and your first team members."
 image: "https://imagedelivery.net/Frxyb2_d_vGyiaXhS5xqCg/527f8451-2748-4f04-ea0f-805a4214cd00/public"
 author: "Paul Chris Luke"
 authorImage: "/images/logo.png"
@@ -8,198 +8,136 @@ category: "quick-start"
 contentType: "guide"
 order: 10
 createdAt: "04/30/2026"
-updatedAt: "04/30/2026"
+updatedAt: "05/07/2026"
+lastVerified: "05/07/2026"
 tags:
   - Setup
-  - Configuration
-  - Account
+  - Onboarding
+  - Practice
 keywords:
-  - Create blawby account
-  - Law firm account setup
-  - Legal practice account
-  - Blawby sign up
+  - Create blawby practice
+  - Conversational onboarding law firm
+  - Practice slug accent color
+  - Law firm software onboarding
 difficulty: "beginner"
 prerequisites: []
-timeToComplete: "5 minutes"
-nextSteps: ["install-chat-widget"]
+timeToComplete: "10 minutes"
+nextSteps: ["accept-first-payment"]
 schemaType: "HowTo"
-faq: []
+faq:
+  - question: "What is a practice slug?"
+    answer: "It's the short identifier for your firm in Blawby — it appears in widget URLs and payment links (e.g. acme-law). Pick something short, lowercase, and memorable."
+  - question: "Can I change practice settings after onboarding?"
+    answer: "Yes. Everything in onboarding can be edited from Settings → Practice afterward, including slug, accent color, services, and jurisdiction coverage."
+  - question: "Do I need to connect Stripe before I can use the dashboard?"
+    answer: "No. You can complete onboarding and explore the dashboard without Stripe, but you'll need to connect it before you can collect payments. See Connect Stripe."
 noindex: false
 ---
 
-# Create Your Practice Account
+# Create Your Practice
 
-Creating a Blawby practice account unlocks 24/7 lead capture, reduces admin overhead, and helps your firm get paid faster. With a single account, you can automate intake, streamline payments, and keep your team organized from day one. This guide walks you through the quick setup process so you can start benefiting right away.
+Onboarding in Blawby happens **in chat**, not on a long form. The setup assistant asks the questions in order, validates your answers as you go, and shows a progress score so you can see what's left.
 
-## Before You Begin
+This page explains what onboarding collects, in what order, and how to make the right choices.
 
-You'll need:
+<DocPlaceholder
+  kind="video"
+  src="/docs/onboarding/conversational-setup.mp4"
+  description="60-second walkthrough of PracticeOnboardingPage — the AI asks for the firm name, slug, accent color, contact info, services, and team."
+/>
 
-- Your law firm's basic information
-- Business email address
-- Practice details (areas of practice, location)
-- Banking information for payments (optional during setup)
+## What you'll need
 
-## Step 1: Sign Up
+Before you start, have these on hand. The assistant will pause on any of them, but it's faster if they're ready:
 
-1. Go to [app.blawby.com/register](https://ai.blawby.com/register)
-2. Choose your account type:
-   - **Solo Practice**: For individual attorneys
-   - **Small Firm**: 2-10 attorneys
-   - **Growing Firm**: 11+ attorneys
+- Firm name and a one-line description.
+- Business email and phone for client communication.
+- Office address (used for jurisdiction defaults and for displaying on payment receipts).
+- Website URL (optional but recommended — used for branding).
+- A short list of practice areas you want to handle.
+- Email addresses for any team members you want to invite.
 
-3. Enter your basic information:
-   - Full name
-   - Email address
-   - Phone number
-   - Law firm name
+## What onboarding collects
 
-## Step 2: Verify Your Email
+The assistant walks through five blocks. Each can be revised later from **Settings → Practice**.
 
-Check your email for a verification link. Click the link to verify your account and continue setup.
+### 1. Basics
 
-## Step 3: Practice Information
+- **Practice name** — the firm's full legal or trade name.
+- **Slug** — your short identifier (e.g. `acme-law`). It shows up in your widget URL and payment links. Keep it short and lowercase.
+- **Accent color** — used for client-facing surfaces: the chat widget, payment pages, engagement letters. Match your brand.
 
-Complete your practice profile:
+### 2. Contact
 
-### Basic Details
+- **Business email** — where firm-wide notifications land.
+- **Business phone** — surfaced on payment receipts and in the widget if you choose to show it.
+- **Address** — your primary office. Used for the jurisdiction defaults the AI applies when intaking from clients in that state.
 
-### Contact Information
+### 3. Services
 
-Select your primary practice areas:
+A short list of the practice areas you handle (e.g. Personal Injury, Family Law, Estate Planning). Each service can have a description that the AI surfaces during intake — so a client asking "do you handle X?" gets a real answer, not a generic deflection.
 
-- Personal Injury
-- Family Law
-- Estate Planning
-- Business Law
-- Criminal Defense
-- Real Estate
-- Immigration
-- Other (specify)
+You don't have to be exhaustive on day one. Add more later as your firm's scope evolves.
 
-## Step 4: Configure Basic Settings
+### 4. Coverage areas
 
-### Time Zone
+The jurisdictions where you're admitted to practice. The AI uses these for routing logic — for example, declining intakes from states where you can't represent the client, or flagging pro-hac-vice cases for review.
 
-Set your local time zone for accurate scheduling and timestamps.
+### 5. Team
 
-### Business Hours
+Invite the other attorneys, paralegals, or admin staff who'll be using Blawby with you. Each invite specifies a role:
 
-Define your regular business hours for appointment scheduling:
+| Role | What they can do |
+|---|---|
+| **Admin** | Full practice access — settings, billing, team management, every matter. |
+| **Attorney** | Matters, clients, intake review, time entry, invoices. |
+| **Staff** | Matters they're assigned to, time entry, file uploads — no settings or billing controls. |
 
-- Monday - Friday: 9:00 AM - 5:00 PM
-- Saturday: Closed
-- Sunday: Closed
+Invites go out by email. Team members create their own credentials when they accept.
 
-### Communication Preferences
+## What you'll see when onboarding is done
 
-Choose how you want to receive notifications:
+A dashboard showing:
 
-- Email notifications
-- SMS alerts
-- In-app notifications only
+- Your **intake queue** (empty until your first widget submission).
+- **Recent matters**, **outstanding payments**, **new clients** — placeholder cards until you have data.
+- **Quick actions** — log a time entry, send a payment request, create a matter, view reports.
+- A persistent **bell** for in-app notifications.
 
-## Step 5: Payment Setup (Optional)
+<DocPlaceholder
+  kind="screenshot"
+  src="/docs/onboarding/dashboard-after-setup.png"
+  description="Dashboard after first-time onboarding — intake queue, summary cards, quick-action buttons, notification bell."
+/>
 
-You can skip this step and set up payments later, but completing it now allows you to accept payments immediately.
+## Common questions during onboarding
 
-### Connect Bank Account
+**My firm name is taken as a slug.**
+Slugs are unique across all of Blawby. Add a short qualifier (`acme-law-co`, `acme-pllc`).
 
-1. Click "Connect Bank Account"
-2. Enter your routing and account numbers
-3. Verify micro-deposits (1-2 business days)
+**Can I onboard before I'm ready to take clients?**
+Yes. Onboarding doesn't expose your widget publicly until you decide. You can configure intake templates, invite your team, and explore the dashboard before sharing your widget URL.
 
-### Configure Payment Methods
+**I'm a solo attorney. Do I still need to invite team members?**
+No. Skip the team step and move on. You can invite later as you grow.
 
-Enable payment types you want to accept:
+**I'm not sure what to put as my accent color.**
+The default works fine. You can change it any time from **Settings → Practice → Branding** and it'll update across all client-facing surfaces.
 
-- Credit/Debit Cards
-- Bank Transfers (ACH)
-- Payment Plans
+## Security defaults
 
-### IOLTA Trust Account
+Every Blawby practice ships with these on by default; you don't configure them:
 
-If you handle client funds:
+- All traffic over HTTPS.
+- Sessions issued and validated by Blawby's hosted Better Auth.
+- Encryption at rest for client records, files, and chat history.
+- File-upload validation (25 MB cap, MIME-type checks).
+- Rate limiting on AI and intake endpoints.
 
-- Set up your IOLTA trust account
-- Configure automatic transfers
-- Set compliance rules
+Two-factor authentication is optional and can be enabled per user under **Settings → Security**.
 
-## Step 6: Review and Confirm
+## Next: connect Stripe so you can collect payments
 
-Review your practice information:
+The dashboard works without Stripe, but you'll need it before your first invoice or consultation fee can be collected.
 
-- ✅ Personal details verified
-- ✅ Practice information complete
-- ✅ Contact information updated
-- ✅ Business hours set
-- ✅ Payment preferences configured
-
-Click "Complete Setup" to finish.
-
-## What's Next?
-
-Your practice account is now ready! Here's what we recommend doing next:
-
-1. **Install the Chat Widget** - Add AI chat to your website
-2. **Accept Your First Payment** - [Accept Your First Payment](/quick-start/accept-first-payment)
-3. **Set Up Client Intake** - [Set Up Client Intake](/features/set-up-client-intake)
-4. **Customize AI Chat** - [Customize AI Chat](/ai-chat/ai-chat-client-acquisition)
-
-## Account Dashboard Overview
-
-Once logged in, you'll see your main dashboard with:
-
-### Quick Actions
-
-- **Start New Conversation**: Begin a chat with a client
-- **Create Invoice**: Send a payment request
-- **Schedule Consultation**: Book client meetings
-- **View Analytics**: Check your practice metrics
-
-### Navigation Menu
-
-- **Conversations**: All client communications
-- **Payments**: Payment history and processing
-- **Clients**: Client management and records
-- **Settings**: Account and practice configuration
-- **Reports**: Analytics and insights
-
-## Security Features
-
-Your account includes built-in security:
-
-- **Two-Factor Authentication**: Optional extra security
-- **Data Encryption**: All data encrypted in transit and at rest
-- **Role-Based Access**: Control team member permissions
-- **Audit Logs**: Track all account activity
-
-## Getting Help
-
-If you need assistance during setup:
-
-- **Help Center**: [blawby.com/help](https://blawby.com/help)
-- **Live Chat**: Available 9 AM - 6 PM EST
-- **Email**: support@blawby.com
-
-## Common Setup Questions
-
-**Q: Can I change my practice type later?**
-A: Yes, you can update your practice type from Settings at any time.
-
-**Q: Is my banking information secure?**
-A: Your banking information is encrypted in transit and processed by PCI-compliant payment processors; see our [Privacy Policy](/privacy) and the [IOLTA Compliance Guide](/compliance/iolta-compliance) for details.
-
-**Q: Can I have multiple practice locations?**
-A: Yes, you can add multiple office locations in your practice settings.
-
-**Q: What if I need to add team members later?**
-A: You can invite team members from the Settings > Team section anytime.
-
----
-
-## Ready to Get Started?
-
-Your practice account is configured and ready to use. The next step is installing the chat widget to start capturing leads and engaging with clients 24/7.
-
-[Continue to Install Chat Widget](/ai-chat/install-chat-widget)
+[Continue to Accept Your First Payment](/quick-start/accept-first-payment)

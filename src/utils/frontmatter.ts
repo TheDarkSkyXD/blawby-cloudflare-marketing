@@ -59,6 +59,13 @@ export type Frontmatter = {
   timeToComplete?: string;
   /** Follow-up content slugs for docs flows */
   nextSteps?: string[];
+
+  // Maintenance Metadata
+  /**
+   * Date the doc was last verified against the live product (MM/DD/YYYY or ISO).
+   * Surfaced in the UI; CI can flag docs older than 90 days.
+   */
+  lastVerified?: string;
 };
 
 // ─── Parser ───────────────────────────────────────────────────────────────────
@@ -75,6 +82,8 @@ export function parseFrontmatter(source: string): Frontmatter {
 
     if (parsed.createdAt) parsed.createdAt = normalizeDate(parsed.createdAt);
     if (parsed.updatedAt) parsed.updatedAt = normalizeDate(parsed.updatedAt);
+    if (parsed.lastVerified)
+      parsed.lastVerified = normalizeDate(parsed.lastVerified);
 
     return parsed as Frontmatter;
   } catch (e) {
