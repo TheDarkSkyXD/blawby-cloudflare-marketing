@@ -79,7 +79,7 @@ A single invoice can mix types — common pattern: hourly time entries plus a fl
 
 ## Status lifecycle
 
-```
+```text
 Draft → Sent → (Pending) → Paid
                   ↓
                Overdue
@@ -111,7 +111,7 @@ Open the paid invoice → **Refund**. Refunds use Stripe's API; the invoice reco
 
 Invoices require a due date of at least the next day. If you need to collect immediately (consultation fee, retainer top-up, donation), use a pre-filled **payment link** instead:
 
-```
+```text
 https://blawby.com/your-firm-slug?amount=12500
 ```
 
