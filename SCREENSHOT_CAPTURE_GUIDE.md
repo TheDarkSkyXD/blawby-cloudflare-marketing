@@ -11,7 +11,15 @@ This guide explains how to capture real product screenshots from the Blawby AI c
 
 ### 2. Required Credentials (in `.env`)
 
-Test account credentials are configured in the chatbot repo's `.env` file as `E2E_OWNER_EMAIL`, `E2E_OWNER_PASSWORD`, `E2E_CLIENT_EMAIL`, and `E2E_CLIENT_PASSWORD`. Check the `.env` file directly for current credentials — do not hardcode them in documentation.
+Use a dedicated demo account for screenshots. Configure these values in the chatbot repo's `.env` file:
+
+- `E2E_PRACTICE_SLUG=https://local.blawby.com/public/demo-law-firm`
+- `E2E_OWNER_EMAIL=demo.owner@blawby.test`
+- `E2E_OWNER_PASSWORD=...`
+- `E2E_CLIENT_EMAIL=demo.client@blawby.test`
+- `E2E_CLIENT_PASSWORD=...`
+
+Do not use personal emails in screenshot environments. Check the `.env` file directly for current credentials and do not hardcode secrets in documentation.
 
 ## Starting the Dev Environment
 
@@ -54,7 +62,7 @@ https://local.blawby.com
 
 1. Navigate to `https://local.blawby.com`
 2. You'll be redirected to `/auth` (login page)
-3. Use the test owner account credentials from the chatbot repo's `.env` file (`E2E_OWNER_EMAIL` and `E2E_OWNER_PASSWORD`)
+3. Use the demo owner credentials from the chatbot repo's `.env` file (`E2E_OWNER_EMAIL` and `E2E_OWNER_PASSWORD`)
 4. You'll be logged in to the practice dashboard
 
 ## Capturing Screenshots
@@ -63,27 +71,27 @@ https://local.blawby.com
 
 #### **Dashboard & Onboarding**
 
-- **Route**: `/practice/paul-yahoo` (home dashboard)
-- **What to capture**: "Welcome back, Paul" dashboard, get-started cards, cashflow summary, recent intakes
+- **Route**: `/practice/{practiceSlug}` (home dashboard)
+- **What to capture**: Dashboard header, get-started cards, cashflow summary, recent intakes
 - **Size**: 1920×1080 or 1280×720 (16:9)
 - **File**: Save as `public/media/docs/onboarding/dashboard-after-setup.png`
 
 #### **Intake Queue**
 
-- **Route**: `/practice/paul-yahoo/intakes` (intake list view)
+- **Route**: `/practice/{practiceSlug}/intakes` (intake list view)
 - **What to capture**: Queue of submissions with filters, urgency badges, client summaries
 - **File**: `public/media/docs/intake/queue.png`
 
 #### **Intake Detail**
 
-- **Route**: `/practice/paul-yahoo/intakes/{id}` (single intake)
+- **Route**: `/practice/{practiceSlug}/intakes/{id}` (single intake)
 - **What to capture**: Annotated detail page with case summary, urgency badge, custom fields
 - **Annotations**: Mark ①②③ on key sections
 - **File**: `public/media/docs/intake/detail-page-annotated.png`
 
 #### **Intake Templates**
 
-- **Route**: `/practice/paul-yahoo/intake-templates` (template editor)
+- **Route**: `/practice/{practiceSlug}/intake-templates` (template editor)
 - **What to capture**:
   - Template list view
   - Field editor with required/enrichment toggles and conditional logic
@@ -94,7 +102,7 @@ https://local.blawby.com
 
 #### **Matters**
 
-- **Route**: `/practice/paul-yahoo/matters/{id}` (matter detail)
+- **Route**: `/practice/{practiceSlug}/matters/{id}` (matter detail)
 - **What to capture**:
   - Matter detail panel with tabs (Overview, Work, Billing, Files, Notes, Activity, Settings)
   - Billing tab with unbilled summary
@@ -107,13 +115,13 @@ https://local.blawby.com
 
 #### **Chat/Conversations**
 
-- **Route**: `/practice/paul-yahoo/matters/{id}/chat` or conversation thread
+- **Route**: `/practice/{practiceSlug}/matters/{id}/chat` or conversation thread
 - **What to capture**: Message thread, file attachment, paralegal analysis streaming, quick-reply suggestions
 - **File**: `public/media/docs/chat/conversation-walkthrough.png`
 
 #### **Engagements**
 
-- **Route**: `/practice/paul-yahoo/engagements` (list) or engagement detail
+- **Route**: `/practice/{practiceSlug}/engagements` (list) or engagement detail
 - **What to capture**:
   - Create engagement dialog
   - Representation section with included/excluded services
@@ -125,7 +133,7 @@ https://local.blawby.com
 
 #### **Settings & Payments**
 
-- **Route**: `/practice/paul-yahoo/settings/payments`
+- **Route**: `/practice/{practiceSlug}/settings/payments`
 - **What to capture**: Stripe Connect checkpoint cards, account linking status
 - **File**: `public/media/docs/payments/stripe-checkpoints.png`
 
@@ -135,7 +143,8 @@ https://local.blawby.com
 
 ```typescript
 // In scripts or tests
-await page.goto("https://local.blawby.com/practice/paul-yahoo/intakes");
+// Replace {practiceSlug} with the slug from E2E_PRACTICE_SLUG
+await page.goto("https://local.blawby.com/practice/demo-law-firm/intakes");
 await page.screenshot({
   path: "public/media/docs/intake/queue.png",
   fullPage: false,
