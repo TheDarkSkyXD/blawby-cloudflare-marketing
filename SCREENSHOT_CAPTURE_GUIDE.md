@@ -6,17 +6,18 @@ This guide explains how to capture real product screenshots from the Blawby AI c
 
 ### 1. Chatbot Repository
 
-- Location: `/Users/paulchrisluke/Repos2025/preact-cloudflare-intake-chatbot/blawby-ai-chatbot`
+- Location: set `$BLAWBY_CHATBOT_REPO` to your local clone of `blawby-ai-chatbot`
+  (e.g. `export BLAWBY_CHATBOT_REPO=~/repos/blawby-ai-chatbot`)
 - Status: Must be configured with `.env` and `worker/.dev.vars` containing API keys and test credentials
 
 ### 2. Required Credentials (in `.env`)
 
 Use a dedicated demo account for screenshots. Configure these values in the chatbot repo's `.env` file:
 
-- `E2E_PRACTICE_SLUG=https://local.blawby.com/public/demo-law-firm`
-- `E2E_OWNER_EMAIL=demo.owner@blawby.test`
+- `E2E_PRACTICE_SLUG=https://local.blawby.com/public/demo-owner-local`
+- `E2E_OWNER_EMAIL=demo.owner.local@blawby.test`
 - `E2E_OWNER_PASSWORD=...`
-- `E2E_CLIENT_EMAIL=demo.client@blawby.test`
+- `E2E_CLIENT_EMAIL=demo.client.local@blawby.test`
 - `E2E_CLIENT_PASSWORD=...`
 
 Do not use personal emails in screenshot environments. Check the `.env` file directly for current credentials and do not hardcode secrets in documentation.
@@ -26,7 +27,7 @@ Do not use personal emails in screenshot environments. Check the `.env` file dir
 ### 1. Start the full dev stack
 
 ```bash
-cd /Users/paulchrisluke/Repos2025/preact-cloudflare-intake-chatbot/blawby-ai-chatbot
+cd $BLAWBY_CHATBOT_REPO  # or your local path to blawby-ai-chatbot
 npm run dev:full
 ```
 
@@ -40,7 +41,7 @@ This runs three processes concurrently:
 
 Output should show:
 
-```
+```text
 [0] ➜  Local:   http://localhost:5137/
 [1] [wrangler:info] Ready on http://localhost:8787
 [2] INF Registered tunnel connection
@@ -52,7 +53,7 @@ Output should show:
 
 Use the tunnel URL (not localhost):
 
-```
+```text
 https://local.blawby.com
 ```
 
@@ -214,7 +215,7 @@ Mark completed items with `[x]`:
 
 ```bash
 # Make sure you're in the right directory
-cd /Users/paulchrisluke/Repos2025/preact-cloudflare-intake-chatbot/blawby-ai-chatbot
+cd $BLAWBY_CHATBOT_REPO  # or your local path to blawby-ai-chatbot
 
 # Verify .env and worker/.dev.vars exist with all keys
 npm run dev:full
